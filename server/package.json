@@ -16,8 +16,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/minimist": "^1.2.5",
     "@types/node": "^22.9.0",
+    "dotenv": "^16.4.5",
     "express": "^4.21.1",
+    "minimist": "^1.2.8",
+    "mongodb": "^6.10.0",
     "typescript": "^5.6.3"
   },
   "devDependencies": {
