@@ -1,5 +1,6 @@
 import { MongoClient, Db, Collection } from 'mongodb'
 import { envConfig } from '~/constants/config'
+import User from '~/models/schemas/Users.schema'
 
 const uri = `mongodb+srv://${envConfig.db_username}:${envConfig.db_password}@minhdevmongo.hzvnp.mongodb.net/?retryWrites=true&w=majority&appName=minhdevMongo`
 
@@ -19,6 +20,10 @@ class DatabaseService {
 
       return error
     }
+  }
+
+  get users(): Collection<User> {
+    return this.db.collection(envConfig.usersCollection)
   }
 }
 
