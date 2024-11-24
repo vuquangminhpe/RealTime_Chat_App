@@ -3,12 +3,13 @@ import { TokenType, UserVerifyStatus } from '~/constants/enum'
 import { RegisterReqBody } from '~/models/request/User.request'
 import { signToken } from '~/utils/jwt'
 import databaseService from './database.services'
-import User from '~/models/schemas/Users.schema'
+import User from '~/models/schemas/users.schema'
 import { ObjectId } from 'mongodb'
 import { hashPassword } from '~/utils/crypto'
 import { ErrorWithStatus } from '~/models/Errors'
 import { USERS_MESSAGES } from '~/constants/messages'
 import HTTP_STATUS from '~/constants/httpStatus'
+import RefreshToken from '~/models/schemas/refreshToken.schema'
 
 class UserServices {
   async signAccessToken({ user_id, verify }: { user_id: string; verify: UserVerifyStatus }) {
@@ -95,11 +96,20 @@ class UserServices {
       user_id: String(user._id),
       verify: user.verify as UserVerifyStatus
     })
-
+    const _id = new ObjectId()
+    await databaseService.refreshToken.insertOne(
+      new RefreshToken({ _id: _id, user_id: new ObjectId(user._id), refresh_token: refresh_token })
+    )
     return {
       access_token,
       refresh_token
     }
+  }
+
+  async logout(refresh_token: string) {
+    const refreshToken = await databaseService.refreshToken.deleteOne({ refresh_token })
+
+    return refreshToken
   }
 }
 

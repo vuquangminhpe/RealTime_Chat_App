@@ -1,6 +1,11 @@
 import { Router } from 'express'
-import { loginController, registerController } from '~/controllers/user.controllers'
-import { loginValidator, registerValidator } from '~/middlewares/User.middlewares'
+import { loginController, logoutController, registerController } from '~/controllers/user.controllers'
+import {
+  accessTokenValidator,
+  loginValidator,
+  refreshTokenValidator,
+  registerValidator
+} from '~/middlewares/user.middlewares'
 import { wrapAsync } from '~/utils/handler'
 
 export const usersRouter = Router()
@@ -22,3 +27,13 @@ usersRouter.post('/register', registerValidator, wrapAsync(registerController))
  */
 
 usersRouter.post('/login', loginValidator, wrapAsync(loginController))
+
+/**
+ * Description: logout
+ * Path: /logout
+ * method: POST
+ * headers: {access_token:string,refresh_token:string}
+ * body: {email: string, password: string}
+ */
+
+usersRouter.post('/logout', accessTokenValidator, refreshTokenValidator, wrapAsync(logoutController))
