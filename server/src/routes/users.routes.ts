@@ -1,5 +1,6 @@
 import { Router } from 'express'
 import {
+  emailTokenController,
   loginController,
   logoutController,
   refreshTokenController,
@@ -9,7 +10,8 @@ import {
   accessTokenValidator,
   loginValidator,
   refreshTokenValidator,
-  registerValidator
+  registerValidator,
+  verifyEmailTokenValidator
 } from '~/middlewares/user.middlewares'
 import { wrapAsync } from '~/utils/handler'
 
@@ -51,3 +53,12 @@ usersRouter.post('/logout', accessTokenValidator, refreshTokenValidator, wrapAsy
  * body: {refresh_token:string}
  */
 usersRouter.post('/refresh-token', accessTokenValidator, refreshTokenValidator, wrapAsync(refreshTokenController))
+
+/**
+ * Description: email verify
+ * Path: /verify-email
+ * method: POST
+ * headers: {access_token:string}
+ * body: {email_verify_token:string}
+ */
+usersRouter.post('/verify-email', verifyEmailTokenValidator, wrapAsync(emailTokenController))

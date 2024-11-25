@@ -3,6 +3,7 @@ import { Request, Response, NextFunction } from 'express'
 import userServices from '~/services/users.services'
 import { ParamsDictionary } from 'express-serve-static-core'
 import {
+  EmailVerifyReqBody,
   LoginReqBody,
   LogoutReqBody,
   RefreshTokenReqBody,
@@ -56,5 +57,13 @@ export const refreshTokenController = async (
   res.json({
     message: USERS_MESSAGES.REFRESH_TOKEN_SUCCESSFULLY,
     result: newRefreshToken
+  })
+}
+
+export const emailTokenController = async (req: Request<ParamsDictionary, any, EmailVerifyReqBody>, res: Response) => {
+  const { email_verify_token } = req.body
+  await userServices.verifyEmail(email_verify_token)
+  res.json({
+    message: USERS_MESSAGES.VERIFY_EMAIL_TOKEN_SUCCESSFULLY
   })
 }

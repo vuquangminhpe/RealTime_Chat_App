@@ -49,7 +49,20 @@ class UserServices {
       },
       privateKey: envConfig.secretOnPublicKey_Email as string,
       optional: {
-        expiresIn: envConfig.expiresIn_access_token
+        expiresIn: envConfig.expiresIn_email_token
+      }
+    })
+  }
+  async signForgotToken({ user_id, verify }: { user_id: string; verify: UserVerifyStatus }) {
+    return signToken({
+      payload: {
+        user_id,
+        verify,
+        user_type: TokenType.AccessToken
+      },
+      privateKey: envConfig.secretOnPublicKey_Forgot as string,
+      optional: {
+        expiresIn: envConfig.expiresIn_forgot_token
       }
     })
   }
@@ -63,7 +76,7 @@ class UserServices {
       verify: UserVerifyStatus.Unverified
     })
 
-    const user = databaseService.users.insertOne(
+    const user = await databaseService.users.insertOne(
       new User({
         ...payload,
         _id: user_id,
@@ -71,8 +84,8 @@ class UserServices {
         email_verify_token: email_verify_token as string
       })
     )
-    const result = databaseService.users.findOne(
-      { _id: new ObjectId((await user).insertedId) },
+    const result = await databaseService.users.findOne(
+      { _id: new ObjectId(user.insertedId) },
       {
         projection: {
           email: 1,
@@ -131,6 +144,12 @@ class UserServices {
     )
 
     return newRefreshToken
+  }
+  async verifyEmail(email_verify_token: string) {
+    await databaseService.users.updateOne(
+      { email_verify_token },
+      { $set: { verify: UserVerifyStatus.Verified, email_verify_token: '' } }
+    )
   }
 }
 

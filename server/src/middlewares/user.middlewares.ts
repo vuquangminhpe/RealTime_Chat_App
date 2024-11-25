@@ -192,3 +192,33 @@ export const refreshTokenValidator = validate(
     ['body']
   )
 )
+
+export const verifyEmailTokenValidator = validate(
+  checkSchema({
+    email_verify_token: {
+      notEmpty: {
+        errorMessage: USERS_MESSAGES.EMAIL_VERIFY_TOKEN_IS_REQUIRED
+      },
+      custom: {
+        options: async (value, { req }) => {
+          console.log(value)
+
+          const user = await databaseService.users.findOne({ email_verify_token: value })
+          if (!user) {
+            throw new ErrorWithStatus({
+              messages: USERS_MESSAGES.USER_NOT_FOUND,
+              status: HTTP_STATUS.NOT_FOUND
+            })
+          }
+          if (user.email_verify_token === '') {
+            throw new ErrorWithStatus({
+              messages: USERS_MESSAGES.EMAIL_ALREADY_VERIFIED,
+              status: HTTP_STATUS.NO_CONTENT
+            })
+          }
+          return true
+        }
+      }
+    }
+  })
+)
