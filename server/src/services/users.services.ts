@@ -151,6 +151,27 @@ class UserServices {
       { $set: { verify: UserVerifyStatus.Verified, email_verify_token: '' } }
     )
   }
+  async recentEmailVerifyToken(user_id: string) {
+    const [user, new_email_verify_token] = await Promise.all([
+      databaseService.users.findOne({ _id: new ObjectId(user_id) }),
+      this.signEmailToken({ user_id, verify: UserVerifyStatus.Unverified })
+    ])
+    if (user?.email_verify_token === '') {
+      throw new ErrorWithStatus({
+        messages: USERS_MESSAGES.EMAIL_ALREADY_VERIFIED,
+        status: HTTP_STATUS.NO_CONTENT
+      })
+    }
+    await databaseService.users.updateOne(
+      { _id: new ObjectId(user_id) },
+      {
+        $set: {
+          email_verify_token: new_email_verify_token as string
+        }
+      }
+    )
+    return new_email_verify_token
+  }
 }
 
 const userServices = new UserServices()

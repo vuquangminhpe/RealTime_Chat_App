@@ -3,6 +3,7 @@ import {
   emailTokenController,
   loginController,
   logoutController,
+  RecentEmailTokenController,
   refreshTokenController,
   registerController
 } from '~/controllers/user.controllers'
@@ -62,3 +63,12 @@ usersRouter.post('/refresh-token', accessTokenValidator, refreshTokenValidator, 
  * body: {email_verify_token:string}
  */
 usersRouter.post('/verify-email', verifyEmailTokenValidator, wrapAsync(emailTokenController))
+
+/**
+ * Description: recent email verify
+ * Path: /verify-email
+ * method: POST
+ * headers: {access_token:string}
+ * body: {email_verify_token:string}
+ */
+usersRouter.post('/resend-verify-email', accessTokenValidator, wrapAsync(RecentEmailTokenController))

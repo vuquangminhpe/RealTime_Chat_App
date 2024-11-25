@@ -67,3 +67,11 @@ export const emailTokenController = async (req: Request<ParamsDictionary, any, E
     message: USERS_MESSAGES.VERIFY_EMAIL_TOKEN_SUCCESSFULLY
   })
 }
+export const RecentEmailTokenController = async (req: Request<ParamsDictionary, any, any>, res: Response) => {
+  const { user_id } = req.decode_authorization as TokenPayload
+  const recentEmailVerifyToken = await userServices.recentEmailVerifyToken(user_id)
+  res.json({
+    message: USERS_MESSAGES.GET_RECENT_EMAIL_VERIFY_TOKEN_SUCCESSFULLY,
+    result: recentEmailVerifyToken
+  })
+}
