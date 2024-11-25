@@ -27,3 +27,6 @@ export interface RefreshTokenReqBody {
 export interface EmailVerifyReqBody {
   email_verify_token: string
 }
+export interface ForgotReqBody {
+  email: string
+}

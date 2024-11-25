@@ -172,6 +172,31 @@ class UserServices {
     )
     return new_email_verify_token
   }
+  async forgotPassword(email: string) {
+    const user = await databaseService.users.findOne({ email })
+    if (!user) {
+      throw new ErrorWithStatus({
+        messages: USERS_MESSAGES.USER_NOT_FOUND,
+        status: HTTP_STATUS.NOT_FOUND
+      })
+    }
+    const new_forgot_password_token = await this.signForgotToken({
+      user_id: String(user._id),
+      verify: user?.verify as UserVerifyStatus
+    })
+    await databaseService.users.updateOne(
+      { _id: new ObjectId(user._id) },
+      {
+        $set: {
+          forgot_password_token: new_forgot_password_token as string
+        },
+        $currentDate: {
+          updated_at: true
+        }
+      }
+    )
+    return new_forgot_password_token
+  }
 }
 
 const userServices = new UserServices()

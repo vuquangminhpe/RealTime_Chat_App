@@ -1,14 +1,16 @@
 import { Router } from 'express'
 import {
   emailTokenController,
+  forgotPasswordController,
   loginController,
   logoutController,
-  RecentEmailTokenController,
+  recentEmailTokenController,
   refreshTokenController,
   registerController
 } from '~/controllers/user.controllers'
 import {
   accessTokenValidator,
+  forgotPasswordTokenValidator,
   loginValidator,
   refreshTokenValidator,
   registerValidator,
@@ -71,4 +73,13 @@ usersRouter.post('/verify-email', verifyEmailTokenValidator, wrapAsync(emailToke
  * headers: {access_token:string}
  * body: {email_verify_token:string}
  */
-usersRouter.post('/resend-verify-email', accessTokenValidator, wrapAsync(RecentEmailTokenController))
+usersRouter.post('/resend-verify-email', accessTokenValidator, wrapAsync(recentEmailTokenController))
+
+/**
+ * Description: forgot-password
+ * Path: /forgot-password
+ * method: POST
+ * headers: {access_token:string}
+ * body: {email_verify_token:string}
+ */
+usersRouter.post('/forgot-password', forgotPasswordTokenValidator, wrapAsync(forgotPasswordController))

@@ -222,3 +222,28 @@ export const verifyEmailTokenValidator = validate(
     }
   })
 )
+
+export const forgotPasswordTokenValidator = validate(
+  checkSchema({
+    email: {
+      notEmpty: {
+        errorMessage: USERS_MESSAGES.EMAIL_IS_REQUIRED
+      },
+      isEmail: {
+        errorMessage: USERS_MESSAGES.INCORRECT_EMAIL_FORMAT
+      },
+      custom: {
+        options: async (value, { req }) => {
+          const user = await databaseService.users.findOne({ email: value })
+          if (!user) {
+            throw new ErrorWithStatus({
+              messages: USERS_MESSAGES.USER_NOT_FOUND,
+              status: HTTP_STATUS.NOT_FOUND
+            })
+          }
+          return true
+        }
+      }
+    }
+  })
+)
