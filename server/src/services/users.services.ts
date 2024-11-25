@@ -1,7 +1,7 @@
 import { envConfig } from '~/constants/config'
 import { TokenType, UserVerifyStatus } from '~/constants/enum'
 import { RegisterReqBody } from '~/models/request/User.request'
-import { signToken } from '~/utils/jwt'
+import { signToken, verifyToken } from '~/utils/jwt'
 import databaseService from './database.services'
 import User from '~/models/schemas/users.schema'
 import { ObjectId } from 'mongodb'
@@ -110,6 +110,27 @@ class UserServices {
     const refreshToken = await databaseService.refreshToken.deleteOne({ refresh_token })
 
     return refreshToken
+  }
+  async refreshToken({
+    refresh_token,
+    user_id,
+    verify
+  }: {
+    refresh_token: string
+    user_id: string
+    verify: UserVerifyStatus
+  }) {
+    const newRefreshToken = await this.signRefreshToken({
+      user_id: String(user_id),
+      verify
+    })
+    await databaseService.refreshToken.deleteOne({ refresh_token })
+    const _id = new ObjectId()
+    await databaseService.refreshToken.insertOne(
+      new RefreshToken({ _id, user_id: new ObjectId(user_id), refresh_token: newRefreshToken })
+    )
+
+    return newRefreshToken
   }
 }
 

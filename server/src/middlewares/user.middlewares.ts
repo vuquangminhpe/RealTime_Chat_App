@@ -174,7 +174,7 @@ export const refreshTokenValidator = validate(
                   status: HTTP_STATUS.NOT_FOUND
                 })
               }
-              ;(req as Request).decoded_refresh_token = decoded_refresh_token
+              ;(req as Request).decoded_refresh_token = decoded_refresh_token as TokenPayload
             } catch (error) {
               if (error instanceof JsonWebTokenError) {
                 throw new ErrorWithStatus({

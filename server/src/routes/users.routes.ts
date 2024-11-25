@@ -1,5 +1,10 @@
 import { Router } from 'express'
-import { loginController, logoutController, registerController } from '~/controllers/user.controllers'
+import {
+  loginController,
+  logoutController,
+  refreshTokenController,
+  registerController
+} from '~/controllers/user.controllers'
 import {
   accessTokenValidator,
   loginValidator,
@@ -32,8 +37,17 @@ usersRouter.post('/login', loginValidator, wrapAsync(loginController))
  * Description: logout
  * Path: /logout
  * method: POST
- * headers: {access_token:string,refresh_token:string}
- * body: {email: string, password: string}
+ * headers: {access_token:string}
+ * body: {refresh_token:string}
  */
 
 usersRouter.post('/logout', accessTokenValidator, refreshTokenValidator, wrapAsync(logoutController))
+
+/**
+ * Description: change refresh token
+ * Path: /refresh_token
+ * method: POST
+ * headers: {access_token:string}
+ * body: {refresh_token:string}
+ */
+usersRouter.post('/refresh-token', accessTokenValidator, refreshTokenValidator, wrapAsync(refreshTokenController))
