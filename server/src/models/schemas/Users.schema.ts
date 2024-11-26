@@ -13,6 +13,7 @@ export interface UserType {
   username: string
   password: string
   email_verify_token: string
+  forgot_password_token: string
   created_at?: Date
   updated_at?: Date
   verify?: UserVerifyStatus
@@ -25,6 +26,7 @@ class User {
   username: string
   password: string
   email_verify_token: string
+  forgot_password_token: string
   created_at?: Date
   updated_at?: Date
   verify?: UserVerifyStatus
@@ -36,6 +38,7 @@ class User {
     username,
     password,
     email_verify_token,
+    forgot_password_token,
     created_at,
     updated_at,
     verify,
@@ -47,6 +50,7 @@ class User {
     this.username = username
     this.password = password
     this.email_verify_token = email_verify_token
+    this.forgot_password_token = forgot_password_token
     this.created_at = created_at || date
     this.updated_at = updated_at || date
     this.verify = verify || UserVerifyStatus.Unverified

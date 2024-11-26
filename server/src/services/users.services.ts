@@ -53,7 +53,7 @@ class UserServices {
       }
     })
   }
-  async signForgotToken({ user_id, verify }: { user_id: string; verify: UserVerifyStatus }) {
+  async signForgotPasswordToken({ user_id, verify }: { user_id: string; verify: UserVerifyStatus }) {
     return signToken({
       payload: {
         user_id,
@@ -75,13 +75,13 @@ class UserServices {
       user_id: user_id.toString(),
       verify: UserVerifyStatus.Unverified
     })
-
     const user = await databaseService.users.insertOne(
       new User({
         ...payload,
         _id: user_id,
         password: hashPassword(payload.password),
-        email_verify_token: email_verify_token as string
+        email_verify_token: email_verify_token as string,
+        forgot_password_token: ''
       })
     )
     const result = await databaseService.users.findOne(
@@ -180,7 +180,7 @@ class UserServices {
         status: HTTP_STATUS.NOT_FOUND
       })
     }
-    const new_forgot_password_token = await this.signForgotToken({
+    const new_forgot_password_token = await this.signForgotPasswordToken({
       user_id: String(user._id),
       verify: user?.verify as UserVerifyStatus
     })
@@ -196,6 +196,24 @@ class UserServices {
       }
     )
     return new_forgot_password_token
+  }
+  async verifyForgotPassword(forgot_password_token: string) {
+    const user = await databaseService.users.findOne({ forgot_password_token })
+
+    if (user) {
+      await databaseService.users.updateOne(
+        { _id: new ObjectId(user._id) },
+        {
+          $set: {
+            forgot_password_token: ''
+          },
+          $currentDate: {
+            updated_at: true
+          }
+        }
+      )
+    }
+    return user
   }
 }
 

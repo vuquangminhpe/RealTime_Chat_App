@@ -11,6 +11,7 @@ import { envConfig } from '~/constants/config'
 import HTTP_STATUS from '~/constants/httpStatus'
 import { JsonWebTokenError } from 'jsonwebtoken'
 import _ from 'lodash'
+import { ObjectId } from 'mongodb'
 export const registerValidator = validate(
   checkSchema({
     email: {
@@ -194,56 +195,89 @@ export const refreshTokenValidator = validate(
 )
 
 export const verifyEmailTokenValidator = validate(
-  checkSchema({
-    email_verify_token: {
-      notEmpty: {
-        errorMessage: USERS_MESSAGES.EMAIL_VERIFY_TOKEN_IS_REQUIRED
-      },
-      custom: {
-        options: async (value, { req }) => {
-          console.log(value)
+  checkSchema(
+    {
+      email_verify_token: {
+        notEmpty: {
+          errorMessage: USERS_MESSAGES.EMAIL_VERIFY_TOKEN_IS_REQUIRED
+        },
+        custom: {
+          options: async (value, { req }) => {
+            console.log(value)
 
-          const user = await databaseService.users.findOne({ email_verify_token: value })
-          if (!user) {
-            throw new ErrorWithStatus({
-              messages: USERS_MESSAGES.USER_NOT_FOUND,
-              status: HTTP_STATUS.NOT_FOUND
-            })
+            const user = await databaseService.users.findOne({ email_verify_token: value })
+            if (!user) {
+              throw new ErrorWithStatus({
+                messages: USERS_MESSAGES.USER_NOT_FOUND,
+                status: HTTP_STATUS.NOT_FOUND
+              })
+            }
+            if (user.email_verify_token === '') {
+              throw new ErrorWithStatus({
+                messages: USERS_MESSAGES.EMAIL_ALREADY_VERIFIED,
+                status: HTTP_STATUS.NO_CONTENT
+              })
+            }
+            return true
           }
-          if (user.email_verify_token === '') {
-            throw new ErrorWithStatus({
-              messages: USERS_MESSAGES.EMAIL_ALREADY_VERIFIED,
-              status: HTTP_STATUS.NO_CONTENT
-            })
-          }
-          return true
         }
       }
-    }
-  })
+    },
+    ['body']
+  )
 )
 
 export const forgotPasswordTokenValidator = validate(
-  checkSchema({
-    email: {
-      notEmpty: {
-        errorMessage: USERS_MESSAGES.EMAIL_IS_REQUIRED
-      },
-      isEmail: {
-        errorMessage: USERS_MESSAGES.INCORRECT_EMAIL_FORMAT
-      },
-      custom: {
-        options: async (value, { req }) => {
-          const user = await databaseService.users.findOne({ email: value })
-          if (!user) {
-            throw new ErrorWithStatus({
-              messages: USERS_MESSAGES.USER_NOT_FOUND,
-              status: HTTP_STATUS.NOT_FOUND
-            })
+  checkSchema(
+    {
+      email: {
+        notEmpty: {
+          errorMessage: USERS_MESSAGES.EMAIL_IS_REQUIRED
+        },
+        isEmail: {
+          errorMessage: USERS_MESSAGES.INCORRECT_EMAIL_FORMAT
+        },
+        custom: {
+          options: async (value, { req }) => {
+            const user = await databaseService.users.findOne({ email: value })
+            if (!user) {
+              throw new ErrorWithStatus({
+                messages: USERS_MESSAGES.USER_NOT_FOUND,
+                status: HTTP_STATUS.NOT_FOUND
+              })
+            }
+            ;(req as Request).user = user
+            return true
           }
-          return true
         }
       }
-    }
-  })
+    },
+    ['body']
+  )
+)
+
+export const verifyForgotPasswordTokenValidator = validate(
+  checkSchema(
+    {
+      forgot_password_token: {
+        notEmpty: {
+          errorMessage: USERS_MESSAGES.FORGOT_PASSWORD_TOKEN_IS_REQUIRED
+        },
+        custom: {
+          options: async (value, { req }) => {
+            const user = await databaseService.users.findOne({ forgot_password_token: value })
+            if (!user) {
+              throw new ErrorWithStatus({
+                messages: USERS_MESSAGES.FORGOT_PASSWORD_TOKEN_IS_INVALID,
+                status: HTTP_STATUS.NOT_FOUND
+              })
+            }
+
+            return true
+          }
+        }
+      }
+    },
+    ['body']
+  )
 )
