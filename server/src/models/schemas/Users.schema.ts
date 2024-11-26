@@ -18,6 +18,9 @@ export interface UserType {
   updated_at?: Date
   verify?: UserVerifyStatus
   avatar?: string
+  bio?: string
+  location?: string
+  website?: string
 }
 
 class User {
@@ -31,6 +34,9 @@ class User {
   updated_at?: Date
   verify?: UserVerifyStatus
   avatar?: string
+  bio?: string
+  location?: string
+  website?: string
 
   constructor({
     _id,
@@ -42,7 +48,10 @@ class User {
     created_at,
     updated_at,
     verify,
-    avatar
+    avatar,
+    bio,
+    location,
+    website
   }: UserType) {
     const date = new Date()
     this._id = _id
@@ -55,6 +64,9 @@ class User {
     this.updated_at = updated_at || date
     this.verify = verify || UserVerifyStatus.Unverified
     this.avatar = avatar
+    this.bio = bio
+    this.location = location
+    this.website = website
   }
 }
 

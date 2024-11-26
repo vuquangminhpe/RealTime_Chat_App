@@ -1,6 +1,6 @@
 import { envConfig } from '~/constants/config'
 import { TokenType, UserVerifyStatus } from '~/constants/enum'
-import { RegisterReqBody } from '~/models/request/User.request'
+import { RegisterReqBody, UpdateMyProfileReqBody } from '~/models/request/User.request'
 import { signToken, verifyToken } from '~/utils/jwt'
 import databaseService from './database.services'
 import User from '~/models/schemas/users.schema'
@@ -229,6 +229,18 @@ class UserServices {
     const user = await databaseService.users.findOne(
       { _id: new ObjectId(user_id) },
       { projection: { email: 1, username: 1, _id: 1, verify: 1, avatar: 1 } }
+    )
+    return user
+  }
+  async updateProfile(user_id: string, payload: UpdateMyProfileReqBody) {
+    const user = await databaseService.users.findOneAndUpdate(
+      { _id: new ObjectId(user_id) },
+      {
+        $set: { ...payload },
+        $currentDate: {
+          updated_at: true
+        }
+      }
     )
     return user
   }

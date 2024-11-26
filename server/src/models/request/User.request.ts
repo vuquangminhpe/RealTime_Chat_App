@@ -37,3 +37,10 @@ export interface ResetPassword {
   password: string
   forgot_password_token: string
 }
+export interface UpdateMyProfileReqBody {
+  username: string
+  avatar: string
+  bio: string
+  location: string
+  website: string
+}

@@ -39,5 +39,16 @@ export const USERS_MESSAGES = {
   VERIFY_FORGOT_PASSWORD_SUCCESSFULLY: 'Verify password successfully',
   RESET_PASSWORD_SUCCESSFULLY: 'Reset password successfully',
   USER_NOT_VERIFIED: 'User not verified',
-  GET_MY_PROFILE_SUCCESSFULLY: 'Get my profile successfully'
+  GET_MY_PROFILE_SUCCESSFULLY: 'Get my profile successfully',
+  USERNAME_IS_REQUIRED: 'Username is required',
+  USERNAME_MUST_BE_CONTAIN_IS_STRING: 'Username must be contain is string',
+  USERNAME_MUST_BE_CONTAIN_5_TO_60_CHARACTER: 'Username must be contain 5 to 60 character',
+  USERNAME_ALREADY_EXISTS: 'Username is already exists',
+  BIO_MUST_BE_CONTAIN_IS_STRING: 'BIO must be contain is string',
+  BIO_MUST_BE_CONTAIN_5_TO_500_CHARACTER: 'Bio must be contain 5 to 500 character',
+  LOCATION_MUST_BE_CONTAIN_IS_STRING: 'Location must be contain is string',
+  LOCATION_MUST_BE_CONTAIN_5_TO_100_CHARACTER: 'Location must be contain 5 to 100 character',
+  WEBSITE_MUST_BE_VALID_URL: 'Website must be valid URL',
+  WEBSITE_MUST_BE_CONTAIN_5_TO_255_CHARACTER: 'Website must be contain 5 to 255 character',
+  UPDATE_MY_PROFILE_SUCCESSFULLY: 'Update my profile successfully'
 }

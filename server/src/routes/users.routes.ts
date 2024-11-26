@@ -9,6 +9,7 @@ import {
   refreshTokenController,
   registerController,
   resetPasswordController,
+  UpdateMyProfileController,
   verifyForgotPasswordController
 } from '~/controllers/user.controllers'
 import {
@@ -18,6 +19,7 @@ import {
   refreshTokenValidator,
   registerValidator,
   resetPasswordValidator,
+  updateMyProfileValidator,
   verifyEmailTokenValidator,
   verifyForgotPasswordTokenValidator,
   verifyUserValidator
@@ -121,7 +123,22 @@ usersRouter.post(
  * Path: /my
  * method: get
  * headers: {access_token:string}
- * body: {}
  */
 
 usersRouter.get('/me', accessTokenValidator, verifyUserValidator, wrapAsync(getMyProfileController))
+
+/**
+ * Description: get my (my profile)
+ * Path: /my
+ * method: get
+ * headers: {access_token:string}
+ * body: type User
+ */
+
+usersRouter.put(
+  '/me',
+  accessTokenValidator,
+  verifyUserValidator,
+  updateMyProfileValidator,
+  wrapAsync(UpdateMyProfileController)
+)
