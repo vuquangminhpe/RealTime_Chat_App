@@ -52,3 +52,9 @@ export const USERS_MESSAGES = {
   WEBSITE_MUST_BE_CONTAIN_5_TO_255_CHARACTER: 'Website must be contain 5 to 255 character',
   UPDATE_MY_PROFILE_SUCCESSFULLY: 'Update my profile successfully'
 }
+
+export const MAKE_FRIENDS_MESSAGES = {
+  FRIEND_NOT_FOUND: 'Friend not found',
+  ALREADY_FRIEND: 'Already friend',
+  FRIEND_ADDED_SUCCESSFULLY: 'Friend add successfully'
+}

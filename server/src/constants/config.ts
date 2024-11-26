@@ -20,6 +20,7 @@ export const envConfig = {
   tweetsCollection: process.env.DB_TWEETS_COLLECTION as string,
   refreshCollection: process.env.DB_REFRESH_TOKENS_COLLECTION as string,
   followersCollection: process.env.DB_FOLLOWERS_COLLECTION as string,
+  makeFriendCollection: process.env.DB_MAKES_FRIEND_COLLECTION as string,
   VideoStatusCollection: process.env.DB_VIDEO_STATUS_COLLECTION as string,
   hashtagsCollection: process.env.DB_HASHTAGS_COLLECTION as string,
   bookmarksCollection: process.env.DB_BOOKMARKS_COLLECTION as string,
