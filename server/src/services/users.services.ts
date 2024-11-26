@@ -199,20 +199,22 @@ class UserServices {
   }
   async verifyForgotPassword(forgot_password_token: string) {
     const user = await databaseService.users.findOne({ forgot_password_token })
-
-    if (user) {
-      await databaseService.users.updateOne(
-        { _id: new ObjectId(user._id) },
-        {
-          $set: {
-            forgot_password_token: ''
-          },
-          $currentDate: {
-            updated_at: true
-          }
+    return user
+  }
+  async resetPassword(password: string, forgot_password_token: string) {
+    const user = await databaseService.users.findOneAndUpdate(
+      { forgot_password_token },
+      {
+        $set: {
+          password: hashPassword(password),
+          forgot_password_token: ''
+        },
+        $currentDate: {
+          updated_at: true
         }
-      )
-    }
+      }
+    )
+
     return user
   }
 }

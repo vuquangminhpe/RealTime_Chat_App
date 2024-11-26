@@ -7,6 +7,7 @@ import {
   recentEmailTokenController,
   refreshTokenController,
   registerController,
+  resetPasswordController,
   verifyForgotPasswordController
 } from '~/controllers/user.controllers'
 import {
@@ -15,6 +16,7 @@ import {
   loginValidator,
   refreshTokenValidator,
   registerValidator,
+  resetPasswordValidator,
   verifyEmailTokenValidator,
   verifyForgotPasswordTokenValidator
 } from '~/middlewares/user.middlewares'
@@ -90,11 +92,25 @@ usersRouter.post('/forgot-password', forgotPasswordTokenValidator, wrapAsync(for
  * Description: verify forgot password
  * Path: /verify-forgot-password
  * method: POST
- * headers: {access_token:string}
  * body: {forgot_password_token:string}
  */
 usersRouter.post(
   '/verify-forgot-password',
   verifyForgotPasswordTokenValidator,
   wrapAsync(verifyForgotPasswordController)
+)
+
+/**
+ * Description: reset password
+ * Path: /reset-password
+ * method: POST
+ * headers: {access_token:string}
+ * body: {password,confirm_password,forgot_password_token:string}
+ */
+
+usersRouter.post(
+  '/reset-password',
+  resetPasswordValidator,
+  verifyForgotPasswordTokenValidator,
+  wrapAsync(resetPasswordController)
 )
