@@ -2,6 +2,7 @@ import { Router } from 'express'
 import {
   emailTokenController,
   forgotPasswordController,
+  getMyProfileController,
   loginController,
   logoutController,
   recentEmailTokenController,
@@ -18,7 +19,8 @@ import {
   registerValidator,
   resetPasswordValidator,
   verifyEmailTokenValidator,
-  verifyForgotPasswordTokenValidator
+  verifyForgotPasswordTokenValidator,
+  verifyUserValidator
 } from '~/middlewares/user.middlewares'
 import { wrapAsync } from '~/utils/handler'
 
@@ -107,10 +109,19 @@ usersRouter.post(
  * headers: {access_token:string}
  * body: {password,confirm_password,forgot_password_token:string}
  */
-
 usersRouter.post(
   '/reset-password',
   resetPasswordValidator,
   verifyForgotPasswordTokenValidator,
   wrapAsync(resetPasswordController)
 )
+
+/**
+ * Description: get my (my profile)
+ * Path: /my
+ * method: get
+ * headers: {access_token:string}
+ * body: {}
+ */
+
+usersRouter.get('/me', accessTokenValidator, verifyUserValidator, wrapAsync(getMyProfileController))

@@ -148,7 +148,12 @@ class UserServices {
   async verifyEmail(email_verify_token: string) {
     await databaseService.users.updateOne(
       { email_verify_token },
-      { $set: { verify: UserVerifyStatus.Verified, email_verify_token: '' } }
+      {
+        $set: { verify: UserVerifyStatus.Verified, email_verify_token: '' },
+        $currentDate: {
+          updated_at: true
+        }
+      }
     )
   }
   async recentEmailVerifyToken(user_id: string) {
@@ -167,6 +172,9 @@ class UserServices {
       {
         $set: {
           email_verify_token: new_email_verify_token as string
+        },
+        $currentDate: {
+          updated_at: true
         }
       }
     )
@@ -215,6 +223,13 @@ class UserServices {
       }
     )
 
+    return user
+  }
+  async getProfile(user_id: string) {
+    const user = await databaseService.users.findOne(
+      { _id: new ObjectId(user_id) },
+      { projection: { email: 1, username: 1, _id: 1, verify: 1, avatar: 1 } }
+    )
     return user
   }
 }

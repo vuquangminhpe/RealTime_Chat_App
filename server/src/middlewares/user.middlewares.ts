@@ -3,7 +3,7 @@ import { USERS_MESSAGES } from '~/constants/messages'
 import databaseService from '~/services/database.services'
 import { verifyAccessToken } from '~/utils/common'
 import { validate } from '~/utils/validation'
-import { Request } from 'express'
+import { NextFunction, Request, RequestHandler } from 'express'
 import { TokenPayload } from '~/models/request/User.request'
 import { ErrorWithStatus } from '~/models/Errors'
 import { verifyToken } from '~/utils/jwt'
@@ -12,6 +12,7 @@ import HTTP_STATUS from '~/constants/httpStatus'
 import { JsonWebTokenError } from 'jsonwebtoken'
 import _ from 'lodash'
 import { ObjectId } from 'mongodb'
+import { UserVerifyStatus } from '~/constants/enum'
 export const registerValidator = validate(
   checkSchema(
     {
@@ -338,3 +339,16 @@ export const resetPasswordValidator = checkSchema(
   },
   ['body']
 )
+
+export const verifyUserValidator: RequestHandler = (req: Request, res, next: NextFunction) => {
+  const { verify } = (req.decode_authorization as TokenPayload) || {}
+  if (verify !== UserVerifyStatus.Verified) {
+    return next(
+      new ErrorWithStatus({
+        messages: USERS_MESSAGES.USER_NOT_VERIFIED,
+        status: HTTP_STATUS.FORBIDDEN
+      })
+    )
+  }
+  next()
+}
