@@ -1,6 +1,6 @@
 import { Router } from 'express'
-import { addFriendsController } from '~/controllers/makeFriends.controllers'
-import { addFriendsValidator } from '~/middlewares/makeFriends.middlewares'
+import { addFriendsController, unFriendsController } from '~/controllers/makeFriends.controllers'
+import { addFriendsValidator, unFriendsValidator } from '~/middlewares/makeFriends.middlewares'
 import { accessTokenValidator, verifyUserValidator } from '~/middlewares/user.middlewares'
 import { wrapAsync } from '~/utils/handler'
 
@@ -23,7 +23,15 @@ makeFriendsRouter.post(
 
 /**
  * Description: unfriend
- * Path: /unfriend_id
+ * Path: /unfriend/:user_id
  * method: POST
  * body: {email: string, password: string}
  */
+
+makeFriendsRouter.post(
+  '/unfriend/:friend_id',
+  accessTokenValidator,
+  verifyUserValidator,
+  unFriendsValidator,
+  wrapAsync(unFriendsController)
+)

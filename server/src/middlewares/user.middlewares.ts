@@ -172,7 +172,9 @@ export const accessTokenValidator = validate(
         custom: {
           options: async (value, { req }) => {
             const access_token = value.split(' ')[1]
-            return await verifyAccessToken(access_token, req as Request)
+            const result = await verifyAccessToken(access_token, req as Request)
+            console.log(result)
+            return result
           }
         }
       }
@@ -359,9 +361,10 @@ export const resetPasswordValidator = checkSchema(
   ['body']
 )
 
-export const verifyUserValidator: RequestHandler = (req: Request, res, next: NextFunction) => {
-  const { verify } = (req.decode_authorization as TokenPayload) || {}
-  if (verify !== UserVerifyStatus.Verified) {
+export const verifyUserValidator: RequestHandler = async (req: Request, res, next: NextFunction) => {
+  const { user_id } = (req.decode_authorization as TokenPayload) || {}
+  const result = await databaseService.users.findOne({ _id: new ObjectId(user_id) })
+  if (result?.verify !== UserVerifyStatus.Verified) {
     return next(
       new ErrorWithStatus({
         messages: USERS_MESSAGES.USER_NOT_VERIFIED,

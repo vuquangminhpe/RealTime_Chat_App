@@ -32,7 +32,42 @@ export const addFriendsValidator = validate(
               status: HTTP_STATUS.CONFLICT
             })
           }
+          if (user_id === friend_id._id.toString()) {
+            throw new ErrorWithStatus({
+              messages: MAKE_FRIENDS_MESSAGES.CANNOT_ADD_YOURSELF,
+              status: HTTP_STATUS.CONFLICT
+            })
+          }
           req.friend_id = friend_id
+          return true
+        }
+      }
+    }
+  })
+)
+
+export const unFriendsValidator = validate(
+  checkSchema({
+    friend_id: {
+      notEmpty: {
+        errorMessage: 'Friend ID is required'
+      },
+      custom: {
+        options: async (value: string, { req }) => {
+          const { user_id } = (req as Request).decode_authorization as TokenPayload
+          const make_friend_id = await databaseService.makeFriend.findOne({
+            friend_id: new ObjectId(value),
+            user_id: new ObjectId(user_id)
+          })
+          console.log(value, make_friend_id)
+
+          if (!make_friend_id) {
+            throw new ErrorWithStatus({
+              messages: MAKE_FRIENDS_MESSAGES.NOT_FRIEND,
+              status: HTTP_STATUS.NOT_FOUND
+            })
+          }
+          req.make_friend_id = make_friend_id
           return true
         }
       }

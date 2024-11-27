@@ -61,5 +61,8 @@ export const USERS_MESSAGES = {
 export const MAKE_FRIENDS_MESSAGES = {
   FRIEND_NOT_FOUND: 'Friend not found',
   ALREADY_FRIEND: 'Already friend',
-  FRIEND_ADDED_SUCCESSFULLY: 'Friend add successfully'
+  FRIEND_ADDED_SUCCESSFULLY: 'Friend add successfully',
+  NOT_FRIEND: 'Not friend',
+  REMOVED_FRIEND_SUCCESSFULLY: 'Removed friend successfully',
+  CANNOT_ADD_YOURSELF: 'Cannot add yourself'
 }

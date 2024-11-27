@@ -28,6 +28,7 @@ export const verifyAccessToken = async (access_tokens: string, request: Request)
       ;(request as Request).decode_authorization = decode_authorization
       return true
     }
+
     return decode_authorization
   } catch (error) {
     throw new ErrorWithStatus({

@@ -17,6 +17,12 @@ class MakeFriendServices {
     })
     return friend
   }
+  async unFriend(friend_id: string, user_id: string) {
+    await databaseService.makeFriend.deleteOne({
+      friend_id: new ObjectId(friend_id),
+      user_id: new ObjectId(user_id)
+    })
+  }
 }
 
 const makeFriendServices = new MakeFriendServices()
