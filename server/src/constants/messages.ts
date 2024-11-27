@@ -70,5 +70,10 @@ export const MAKE_FRIENDS_MESSAGES = {
 export const BANNED_MESSAGES = {
   BANNED_USER_ID_REQUIRED: 'Banned user ID is required',
   CANNOT_BAN_YOURSELF: 'Cannot ban yourself',
-  BANNED_USER_SUCCESSFULLY: 'Banned user successfully'
+  BANNED_USER_SUCCESSFULLY: 'Banned user successfully',
+  UN_BANNED_USER_ID_REQUIRED: 'Un banned user ID is required',
+  UN_BANNED_USER_SUCCESSFULLY: 'Un banned user successfully',
+  USER_HAS_BEEN_BANNED: 'User has been banned',
+  USER_HAS_BEEN_UN_BANNED: 'User has been un banned',
+  CANNOT_UN_BAN_YOURSELF: 'Cannot un ban yourself'
 }
