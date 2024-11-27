@@ -15,6 +15,8 @@ import {
   VerifyForgotPasswordTokenReqBody
 } from '~/models/request/User.request'
 import { USERS_MESSAGES } from '~/constants/messages'
+import HTTP_STATUS from '~/constants/httpStatus'
+import { ErrorWithStatus } from '~/models/Errors'
 export const registerController = async (
   req: Request<ParamsDictionary, any, RegisterReqBody>,
   res: Response,
@@ -127,5 +129,21 @@ export const UpdateMyProfileController = async (
   res.json({
     message: USERS_MESSAGES.UPDATE_MY_PROFILE_SUCCESSFULLY,
     result: updatedUser
+  })
+}
+
+export const getUserController = async (req: Request<ParamsDictionary, any, any>, res: Response) => {
+  const { username } = req.params
+  if (!username) {
+    throw new ErrorWithStatus({
+      messages: USERS_MESSAGES.USER_NOT_FOUND,
+      status: HTTP_STATUS.BAD_REQUEST
+    })
+  }
+  const user = await userServices.getUser(username)
+
+  res.json({
+    message: USERS_MESSAGES.GET_USER_DETAILS_SUCCESSFULLY,
+    result: user
   })
 }

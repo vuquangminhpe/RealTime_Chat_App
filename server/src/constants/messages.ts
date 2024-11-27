@@ -50,9 +50,14 @@ export const USERS_MESSAGES = {
   LOCATION_MUST_BE_CONTAIN_5_TO_100_CHARACTER: 'Location must be contain 5 to 100 character',
   WEBSITE_MUST_BE_VALID_URL: 'Website must be valid URL',
   WEBSITE_MUST_BE_CONTAIN_5_TO_255_CHARACTER: 'Website must be contain 5 to 255 character',
-  UPDATE_MY_PROFILE_SUCCESSFULLY: 'Update my profile successfully'
+  UPDATE_MY_PROFILE_SUCCESSFULLY: 'Update my profile successfully',
+  INVALID_USER_ID: 'Invalid user ID',
+  GET_USER_DETAILS_SUCCESSFULLY: 'Get user details successfully',
+  USER_BANNED_CANT_NOT_GET_DATA: 'User banned cant not get data',
+  DATE_OF_BIRTH_IS_REQUIRED: 'Date of birth is required',
+  DATE_OF_BIRTH_MUST_BE_IN_ISO_8601_FORMAT: 'Date of birth must be in ISO 8601 format',
+  YOU_ARE_NOT_ELIGIBLE_FOR_REGISTER: 'You are not eligible for registration'
 }
-
 export const MAKE_FRIENDS_MESSAGES = {
   FRIEND_NOT_FOUND: 'Friend not found',
   ALREADY_FRIEND: 'Already friend',

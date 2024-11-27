@@ -103,6 +103,25 @@ export const registerValidator = validate(
             return true
           }
         }
+      },
+      date_of_birth: {
+        notEmpty: {
+          errorMessage: USERS_MESSAGES.DATE_OF_BIRTH_IS_REQUIRED
+        },
+        isISO8601: {
+          errorMessage: USERS_MESSAGES.DATE_OF_BIRTH_MUST_BE_IN_ISO_8601_FORMAT
+        },
+        custom: {
+          options: (value) => {
+            const birthDate = new Date(value)
+            const currentDate = new Date()
+            const ageDiff = currentDate.getFullYear() - birthDate.getFullYear()
+            if (ageDiff < 18) {
+              throw new Error(USERS_MESSAGES.YOU_ARE_NOT_ELIGIBLE_FOR_REGISTER)
+            }
+            return true
+          }
+        }
       }
     },
     ['body']

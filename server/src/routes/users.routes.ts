@@ -3,6 +3,7 @@ import {
   emailTokenController,
   forgotPasswordController,
   getMyProfileController,
+  getUserController,
   loginController,
   logoutController,
   recentEmailTokenController,
@@ -142,3 +143,11 @@ usersRouter.put(
   updateMyProfileValidator,
   wrapAsync(UpdateMyProfileController)
 )
+
+/**
+ * Description: get user (user profile (Just things that are public ))
+ * Path: /:username
+ * method: get
+ * headers: {access_token:string}
+ */
+usersRouter.get('/:username', accessTokenValidator, wrapAsync(getUserController))

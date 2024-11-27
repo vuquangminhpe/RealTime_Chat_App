@@ -20,3 +20,10 @@ makeFriendsRouter.post(
   addFriendsValidator,
   wrapAsync(addFriendsController)
 )
+
+/**
+ * Description: unfriend
+ * Path: /unfriend_id
+ * method: POST
+ * body: {email: string, password: string}
+ */

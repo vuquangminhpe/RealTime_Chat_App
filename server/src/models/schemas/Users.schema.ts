@@ -17,6 +17,7 @@ export interface UserType {
   created_at?: Date
   updated_at?: Date
   verify?: UserVerifyStatus
+  date_of_birth: Date
   avatar?: string
   bio?: string
   location?: string
@@ -33,6 +34,7 @@ class User {
   created_at?: Date
   updated_at?: Date
   verify?: UserVerifyStatus
+  date_of_birth: Date
   avatar?: string
   bio?: string
   location?: string
@@ -48,6 +50,7 @@ class User {
     created_at,
     updated_at,
     verify,
+    date_of_birth,
     avatar,
     bio,
     location,
@@ -63,6 +66,7 @@ class User {
     this.created_at = created_at || date
     this.updated_at = updated_at || date
     this.verify = verify || UserVerifyStatus.Unverified
+    this.date_of_birth = date_of_birth
     this.avatar = avatar
     this.bio = bio
     this.location = location

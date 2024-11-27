@@ -81,7 +81,8 @@ class UserServices {
         _id: user_id,
         password: hashPassword(payload.password),
         email_verify_token: email_verify_token as string,
-        forgot_password_token: ''
+        forgot_password_token: '',
+        date_of_birth: new Date(payload.date_of_birth)
       })
     )
     const result = await databaseService.users.findOne(
@@ -242,6 +243,19 @@ class UserServices {
         }
       }
     )
+    return user
+  }
+  async getUser(username: string) {
+    const user = await databaseService.users.findOne(
+      { username: username },
+      { projection: { email: 1, username: 1, avatar: 1, bio: 1, location: 1, website: 1 } }
+    )
+    if (user?.verify === UserVerifyStatus.Banned) {
+      throw new ErrorWithStatus({
+        messages: USERS_MESSAGES.USER_BANNED_CANT_NOT_GET_DATA,
+        status: HTTP_STATUS.FORBIDDEN
+      })
+    }
     return user
   }
 }
