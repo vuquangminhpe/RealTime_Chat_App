@@ -1,5 +1,6 @@
 import { MongoClient, Db, Collection } from 'mongodb'
 import { envConfig } from '~/constants/config'
+import BanUser from '~/models/schemas/banUser.schema'
 import MakeFriend from '~/models/schemas/makeFriends.schema'
 import RefreshToken from '~/models/schemas/refreshToken.schema'
 import User from '~/models/schemas/users.schema'
@@ -32,6 +33,9 @@ class DatabaseService {
   }
   get makeFriend(): Collection<MakeFriend> {
     return this.db.collection(envConfig.makeFriendCollection)
+  }
+  get bannedUsers(): Collection<BanUser> {
+    return this.db.collection(envConfig.banUserCollection)
   }
 }
 

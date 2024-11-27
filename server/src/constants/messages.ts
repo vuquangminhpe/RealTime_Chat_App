@@ -66,3 +66,9 @@ export const MAKE_FRIENDS_MESSAGES = {
   REMOVED_FRIEND_SUCCESSFULLY: 'Removed friend successfully',
   CANNOT_ADD_YOURSELF: 'Cannot add yourself'
 }
+
+export const BANNED_MESSAGES = {
+  BANNED_USER_ID_REQUIRED: 'Banned user ID is required',
+  CANNOT_BAN_YOURSELF: 'Cannot ban yourself',
+  BANNED_USER_SUCCESSFULLY: 'Banned user successfully'
+}

@@ -12,7 +12,6 @@ export const makeFriendsRouter = Router()
  * method: POST
  * body: {email: string, password: string}
  */
-
 makeFriendsRouter.post(
   '/add',
   accessTokenValidator,
@@ -27,7 +26,6 @@ makeFriendsRouter.post(
  * method: POST
  * body: {email: string, password: string}
  */
-
 makeFriendsRouter.delete(
   '/unfriend/:friend_id',
   accessTokenValidator,

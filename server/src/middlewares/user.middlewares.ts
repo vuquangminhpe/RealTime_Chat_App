@@ -376,67 +376,70 @@ export const verifyUserValidator: RequestHandler = async (req: Request, res, nex
 }
 
 export const updateMyProfileValidator = validate(
-  checkSchema({
-    username: {
-      notEmpty: {
-        errorMessage: USERS_MESSAGES.USERNAME_IS_REQUIRED
-      },
-      isString: {
-        errorMessage: USERS_MESSAGES.USERNAME_MUST_BE_CONTAIN_IS_STRING
-      },
-      isLength: {
-        options: {
-          min: 0,
-          max: 60
+  checkSchema(
+    {
+      username: {
+        notEmpty: {
+          errorMessage: USERS_MESSAGES.USERNAME_IS_REQUIRED
         },
-        errorMessage: USERS_MESSAGES.USERNAME_MUST_BE_CONTAIN_5_TO_60_CHARACTER
-      },
-      custom: {
-        options: async (value, { req }) => {
-          const { user_id } = (req as Request).decode_authorization as TokenPayload
-          const user = await databaseService.users.findOne({ _id: new ObjectId(user_id), username: value as string })
-          if (user) {
-            throw new ErrorWithStatus({
-              messages: USERS_MESSAGES.USERNAME_ALREADY_EXISTS,
-              status: HTTP_STATUS.CONFLICT
-            })
+        isString: {
+          errorMessage: USERS_MESSAGES.USERNAME_MUST_BE_CONTAIN_IS_STRING
+        },
+        isLength: {
+          options: {
+            min: 0,
+            max: 60
+          },
+          errorMessage: USERS_MESSAGES.USERNAME_MUST_BE_CONTAIN_5_TO_60_CHARACTER
+        },
+        custom: {
+          options: async (value, { req }) => {
+            const { user_id } = (req as Request).decode_authorization as TokenPayload
+            const user = await databaseService.users.findOne({ _id: new ObjectId(user_id), username: value as string })
+            if (user) {
+              throw new ErrorWithStatus({
+                messages: USERS_MESSAGES.USERNAME_ALREADY_EXISTS,
+                status: HTTP_STATUS.CONFLICT
+              })
+            }
+            return true
           }
-          return true
+        }
+      },
+      bio: {
+        isString: {
+          errorMessage: USERS_MESSAGES.BIO_MUST_BE_CONTAIN_IS_STRING
+        },
+        isLength: {
+          options: {
+            min: 0,
+            max: 500
+          },
+          errorMessage: USERS_MESSAGES.BIO_MUST_BE_CONTAIN_5_TO_500_CHARACTER
+        }
+      },
+      location: {
+        isString: {
+          errorMessage: USERS_MESSAGES.LOCATION_MUST_BE_CONTAIN_IS_STRING
+        },
+        isLength: {
+          options: {
+            min: 0,
+            max: 100
+          },
+          errorMessage: USERS_MESSAGES.LOCATION_MUST_BE_CONTAIN_5_TO_100_CHARACTER
+        }
+      },
+      website: {
+        isLength: {
+          options: {
+            min: 0,
+            max: 255
+          },
+          errorMessage: USERS_MESSAGES.WEBSITE_MUST_BE_CONTAIN_5_TO_255_CHARACTER
         }
       }
     },
-    bio: {
-      isString: {
-        errorMessage: USERS_MESSAGES.BIO_MUST_BE_CONTAIN_IS_STRING
-      },
-      isLength: {
-        options: {
-          min: 0,
-          max: 500
-        },
-        errorMessage: USERS_MESSAGES.BIO_MUST_BE_CONTAIN_5_TO_500_CHARACTER
-      }
-    },
-    location: {
-      isString: {
-        errorMessage: USERS_MESSAGES.LOCATION_MUST_BE_CONTAIN_IS_STRING
-      },
-      isLength: {
-        options: {
-          min: 0,
-          max: 100
-        },
-        errorMessage: USERS_MESSAGES.LOCATION_MUST_BE_CONTAIN_5_TO_100_CHARACTER
-      }
-    },
-    website: {
-      isLength: {
-        options: {
-          min: 0,
-          max: 255
-        },
-        errorMessage: USERS_MESSAGES.WEBSITE_MUST_BE_CONTAIN_5_TO_255_CHARACTER
-      }
-    }
-  })
+    ['body']
+  )
 )
