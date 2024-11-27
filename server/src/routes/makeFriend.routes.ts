@@ -28,7 +28,7 @@ makeFriendsRouter.post(
  * body: {email: string, password: string}
  */
 
-makeFriendsRouter.post(
+makeFriendsRouter.delete(
   '/unfriend/:friend_id',
   accessTokenValidator,
   verifyUserValidator,
