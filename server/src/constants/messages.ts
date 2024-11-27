@@ -56,7 +56,8 @@ export const USERS_MESSAGES = {
   USER_BANNED_CANT_NOT_GET_DATA: 'User banned cant not get data',
   DATE_OF_BIRTH_IS_REQUIRED: 'Date of birth is required',
   DATE_OF_BIRTH_MUST_BE_IN_ISO_8601_FORMAT: 'Date of birth must be in ISO 8601 format',
-  YOU_ARE_NOT_ELIGIBLE_FOR_REGISTER: 'You are not eligible for registration'
+  YOU_ARE_NOT_ELIGIBLE_FOR_REGISTER: 'You are not eligible for registration',
+  USER_HAS_BEEN_BANNED_NO_GET_PROFILE: 'User has been banned no get profile'
 }
 export const MAKE_FRIENDS_MESSAGES = {
   FRIEND_NOT_FOUND: 'Friend not found',
@@ -64,7 +65,8 @@ export const MAKE_FRIENDS_MESSAGES = {
   FRIEND_ADDED_SUCCESSFULLY: 'Friend add successfully',
   NOT_FRIEND: 'Not friend',
   REMOVED_FRIEND_SUCCESSFULLY: 'Removed friend successfully',
-  CANNOT_ADD_YOURSELF: 'Cannot add yourself'
+  CANNOT_ADD_YOURSELF: 'Cannot add yourself',
+  USER_IS_BANNED: 'User is banned'
 }
 
 export const BANNED_MESSAGES = {

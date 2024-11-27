@@ -16,6 +16,7 @@ import {
 import {
   accessTokenValidator,
   forgotPasswordTokenValidator,
+  getUserProfileValidator,
   loginValidator,
   refreshTokenValidator,
   registerValidator,
@@ -150,4 +151,4 @@ usersRouter.put(
  * method: get
  * headers: {access_token:string}
  */
-usersRouter.get('/:username', accessTokenValidator, wrapAsync(getUserController))
+usersRouter.get('/:username', accessTokenValidator, getUserProfileValidator, wrapAsync(getUserController))

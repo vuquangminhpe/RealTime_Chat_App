@@ -443,3 +443,38 @@ export const updateMyProfileValidator = validate(
     ['body']
   )
 )
+
+export const getUserProfileValidator = validate(
+  checkSchema(
+    {
+      username: {
+        notEmpty: {
+          errorMessage: USERS_MESSAGES.USERNAME_IS_REQUIRED
+        },
+        isString: {
+          errorMessage: USERS_MESSAGES.USERNAME_MUST_BE_CONTAIN_IS_STRING
+        },
+        custom: {
+          options: async (value: string, { req }) => {
+            const user = await databaseService.users.findOne({ username: value })
+            if (!user) {
+              throw new ErrorWithStatus({
+                messages: USERS_MESSAGES.USER_NOT_FOUND,
+                status: HTTP_STATUS.NOT_FOUND
+              })
+            }
+            const isBanned = await databaseService.bannedUsers.findOne({ banned_user_id: new ObjectId(user._id) })
+            if (isBanned) {
+              throw new ErrorWithStatus({
+                messages: USERS_MESSAGES.USER_HAS_BEEN_BANNED_NO_GET_PROFILE,
+                status: HTTP_STATUS.BAD_REQUEST
+              })
+            }
+            return true
+          }
+        }
+      }
+    },
+    ['params']
+  )
+)

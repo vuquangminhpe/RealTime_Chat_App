@@ -17,6 +17,13 @@ export const addFriendsValidator = validate(
         custom: {
           options: async (value: string, { req }) => {
             const { user_id } = (req as Request).decode_authorization as TokenPayload
+            const isBanned = await databaseService.bannedUsers.findOne({ banned_user_id: new ObjectId(value) })
+            if (isBanned) {
+              throw new ErrorWithStatus({
+                messages: MAKE_FRIENDS_MESSAGES.USER_IS_BANNED,
+                status: HTTP_STATUS.NOT_FOUND
+              })
+            }
             const [friend_id, make_friend_id] = await Promise.all([
               databaseService.users.findOne({ _id: new ObjectId(value) }),
               databaseService.makeFriend.findOne({ friend_id: new ObjectId(value), user_id: new ObjectId(user_id) })
@@ -59,6 +66,13 @@ export const unFriendsValidator = validate(
         custom: {
           options: async (value: string, { req }) => {
             const { user_id } = (req as Request).decode_authorization as TokenPayload
+            const isBanned = await databaseService.bannedUsers.findOne({ banned_user_id: new ObjectId(value) })
+            if (isBanned) {
+              throw new ErrorWithStatus({
+                messages: MAKE_FRIENDS_MESSAGES.USER_IS_BANNED,
+                status: HTTP_STATUS.NOT_FOUND
+              })
+            }
             const make_friend_id = await databaseService.makeFriend.findOne({
               friend_id: new ObjectId(value),
               user_id: new ObjectId(user_id)
