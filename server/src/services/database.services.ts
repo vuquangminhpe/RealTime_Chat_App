@@ -2,7 +2,9 @@ import { MongoClient, Db, Collection } from 'mongodb'
 import { envConfig } from '~/constants/config'
 import BanUser from '~/models/schemas/banUser.schema'
 import MakeFriend from '~/models/schemas/makeFriends.schema'
+import Reactions from '~/models/schemas/reactions.schema'
 import RefreshToken from '~/models/schemas/refreshToken.schema'
+import Stories from '~/models/schemas/stories.schema'
 import User from '~/models/schemas/users.schema'
 
 const uri = `mongodb+srv://${envConfig.db_username}:${envConfig.db_password}@minhdevmongo.hzvnp.mongodb.net/?retryWrites=true&w=majority&appName=minhdevMongo`
@@ -36,6 +38,12 @@ class DatabaseService {
   }
   get bannedUsers(): Collection<BanUser> {
     return this.db.collection(envConfig.banUserCollection)
+  }
+  get stories(): Collection<Stories> {
+    return this.db.collection(envConfig.storiesCollection)
+  }
+  get reactions(): Collection<Reactions> {
+    return this.db.collection(envConfig.reactionsCollection)
   }
 }
 

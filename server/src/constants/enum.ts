@@ -10,3 +10,17 @@ export enum TokenType {
   ForgotPasswordToken,
   EmailVerifyToken
 }
+
+export enum StoriesDataType {
+  Image,
+  Videos
+}
+
+export enum ReactionStatus {
+  like,
+  love,
+  haha,
+  wow,
+  sad,
+  angry
+}
