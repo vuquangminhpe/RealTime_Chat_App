@@ -24,3 +24,19 @@ export enum ReactionStatus {
   sad,
   angry
 }
+
+export enum MediaType {
+  Image,
+  Video,
+  HLS
+}
+export enum MediaTypeQuery {
+  Image = 'image',
+  Video = 'video'
+}
+export enum EncodingStatus {
+  Pending, //hàng đợi
+  Processing, //Đang encode
+  Success, // Encode thành công
+  Failed // Encode thất bại
+}

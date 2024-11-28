@@ -6,6 +6,7 @@ import Reactions from '~/models/schemas/reactions.schema'
 import RefreshToken from '~/models/schemas/refreshToken.schema'
 import Stories from '~/models/schemas/stories.schema'
 import User from '~/models/schemas/users.schema'
+import VideoStatus from '~/models/schemas/VideoStatus.schema'
 
 const uri = `mongodb+srv://${envConfig.db_username}:${envConfig.db_password}@minhdevmongo.hzvnp.mongodb.net/?retryWrites=true&w=majority&appName=minhdevMongo`
 
@@ -44,6 +45,9 @@ class DatabaseService {
   }
   get reactions(): Collection<Reactions> {
     return this.db.collection(envConfig.reactionsCollection)
+  }
+  get videoStatus(): Collection<VideoStatus> {
+    return this.db.collection(envConfig.VideoStatusCollection)
   }
 }
 

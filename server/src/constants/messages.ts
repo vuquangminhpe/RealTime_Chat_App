@@ -57,7 +57,9 @@ export const USERS_MESSAGES = {
   DATE_OF_BIRTH_IS_REQUIRED: 'Date of birth is required',
   DATE_OF_BIRTH_MUST_BE_IN_ISO_8601_FORMAT: 'Date of birth must be in ISO 8601 format',
   YOU_ARE_NOT_ELIGIBLE_FOR_REGISTER: 'You are not eligible for registration',
-  USER_HAS_BEEN_BANNED_NO_GET_PROFILE: 'User has been banned no get profile'
+  USER_HAS_BEEN_BANNED_NO_GET_PROFILE: 'User has been banned no get profile',
+  UPLOAD_SUCCESS: 'Upload success',
+  GET_VIDEO_STATUS_SUCCESS: 'Get video status success'
 }
 export const MAKE_FRIENDS_MESSAGES = {
   FRIEND_NOT_FOUND: 'Friend not found',
