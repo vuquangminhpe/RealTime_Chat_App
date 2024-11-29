@@ -478,3 +478,27 @@ export const getUserProfileValidator = validate(
     ['params']
   )
 )
+
+export const getConversationsValidator = validate(
+  checkSchema(
+    {
+      receive_id: {
+        custom: {
+          options: async (value) => {
+            const user = await databaseService.users.findOne({
+              _id: new ObjectId(value as string)
+            })
+
+            if (user) {
+              throw new ErrorWithStatus({
+                messages: USERS_MESSAGES.USER_NOT_FOUND,
+                status: HTTP_STATUS.NOT_FOUND
+              })
+            }
+          }
+        }
+      }
+    },
+    ['params']
+  )
+)

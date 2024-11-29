@@ -1,7 +1,7 @@
 import { Router } from 'express'
 import { addFriendsController, unFriendsController } from '~/controllers/makeFriends.controllers'
 import { addFriendsValidator, unFriendsValidator } from '~/middlewares/makeFriends.middlewares'
-import { accessTokenValidator, verifyUserValidator } from '~/middlewares/user.middlewares'
+import { accessTokenValidator, verifyUserValidator } from '~/middlewares/users.middlewares'
 import { wrapAsync } from '~/utils/handler'
 
 export const makeFriendsRouter = Router()

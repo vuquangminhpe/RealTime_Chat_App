@@ -1,7 +1,7 @@
 import { Router } from 'express'
 import { bannedUserController, unBannedUserController } from '~/controllers/banUsers.controllers'
 import { bannedUserValidator, unBannedUserValidator } from '~/middlewares/banUser.middlewares'
-import { accessTokenValidator, verifyUserValidator } from '~/middlewares/user.middlewares'
+import { accessTokenValidator, verifyUserValidator } from '~/middlewares/users.middlewares'
 import { wrapAsync } from '~/utils/handler'
 
 export const banUsersRouter = Router()

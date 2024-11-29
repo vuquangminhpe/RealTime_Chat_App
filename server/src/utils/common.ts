@@ -10,7 +10,7 @@ export const numberEnumToArray = (numberEnum: { [key: string]: string | number }
   return Object.values(numberEnum).filter((value) => typeof value === 'number') as number[]
 }
 
-export const verifyAccessToken = async (access_tokens: string, request: Request) => {
+export const verifyAccessToken = async (access_tokens: string, request?: Request) => {
   if (!access_tokens) {
     throw new ErrorWithStatus({
       messages: USERS_MESSAGES.ACCESS_TOKEN_REQUIRED,

@@ -1,6 +1,7 @@
 import { MongoClient, Db, Collection } from 'mongodb'
 import { envConfig } from '~/constants/config'
 import BanUser from '~/models/schemas/banUser.schema'
+import Conversations from '~/models/schemas/conversation.schema'
 import MakeFriend from '~/models/schemas/makeFriends.schema'
 import Reactions from '~/models/schemas/reactions.schema'
 import RefreshToken from '~/models/schemas/refreshToken.schema'
@@ -48,6 +49,9 @@ class DatabaseService {
   }
   get videoStatus(): Collection<VideoStatus> {
     return this.db.collection(envConfig.VideoStatusCollection)
+  }
+  get conversations(): Collection<Conversations> {
+    return this.db.collection(envConfig.conversationsCollection)
   }
 }
 

@@ -25,7 +25,7 @@ import {
   verifyEmailTokenValidator,
   verifyForgotPasswordTokenValidator,
   verifyUserValidator
-} from '~/middlewares/user.middlewares'
+} from '~/middlewares/users.middlewares'
 import { wrapAsync } from '~/utils/handler'
 
 export const usersRouter = Router()

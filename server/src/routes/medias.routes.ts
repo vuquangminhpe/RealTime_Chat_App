@@ -5,7 +5,7 @@ import {
   uploadVideoHLSController,
   videoStatusController
 } from '~/controllers/medias.controllers'
-import { accessTokenValidator, verifyUserValidator } from '~/middlewares/user.middlewares'
+import { accessTokenValidator, verifyUserValidator } from '~/middlewares/users.middlewares'
 import { wrapAsync } from '~/utils/handler'
 const mediasRouter = Router()
 

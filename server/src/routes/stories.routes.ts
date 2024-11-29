@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { accessTokenValidator } from '~/middlewares/user.middlewares'
+import { accessTokenValidator } from '~/middlewares/users.middlewares'
 import { wrapAsync } from '~/utils/handler'
 
 export const stories = Router()

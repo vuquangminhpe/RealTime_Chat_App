@@ -12,6 +12,7 @@ import { UPLOAD_VIDEO_DIR } from './constants/dir'
 import rateLimit from 'express-rate-limit'
 import helmet from 'helmet'
 import cors, { CorsOptions } from 'cors'
+import initSocket from './utils/socket'
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15p
@@ -41,6 +42,7 @@ app.use('/medias', mediasRouter)
 app.use('/static/video-stream', express.static(UPLOAD_VIDEO_DIR))
 
 app.use(defaultErrorHandler)
+initSocket(httpServer)
 httpServer.listen(port, () => {
   console.log(`Server listening on port ${port}`)
 })
