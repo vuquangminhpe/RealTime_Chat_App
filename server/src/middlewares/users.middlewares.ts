@@ -1,5 +1,5 @@
 import { checkSchema } from 'express-validator'
-import { USERS_MESSAGES } from '~/constants/messages'
+import { CONVERSATIONS_MESSAGES, USERS_MESSAGES } from '~/constants/messages'
 import databaseService from '~/services/database.services'
 import { verifyAccessToken } from '~/utils/common'
 import { validate } from '~/utils/validation'
@@ -12,7 +12,8 @@ import HTTP_STATUS from '~/constants/httpStatus'
 import { JsonWebTokenError } from 'jsonwebtoken'
 import _ from 'lodash'
 import { ObjectId } from 'mongodb'
-import { UserVerifyStatus } from '~/constants/enum'
+import { ConversationsStatus, UserVerifyStatus } from '~/constants/enum'
+import User from '~/models/schemas/users.schema'
 export const registerValidator = validate(
   checkSchema(
     {
@@ -482,23 +483,75 @@ export const getUserProfileValidator = validate(
 export const getConversationsValidator = validate(
   checkSchema(
     {
-      receive_id: {
+      receiver_id: {
+        isArray: true,
         custom: {
-          options: async (value) => {
-            const user = await databaseService.users.findOne({
-              _id: new ObjectId(value as string)
-            })
+          options: async (value: string[]) => {
+            const user = await databaseService.users
+              .find({
+                _id: { $in: value.map((id) => new ObjectId(id)) }
+              })
+              .toArray()
 
-            if (user) {
+            user.forEach((u) => {
+              if (!u) {
+                throw new ErrorWithStatus({
+                  messages: `${USERS_MESSAGES.USER_NOT_FOUND}: { 
+                  User_id: ${(u as User)._id} 
+                  }`,
+                  status: HTTP_STATUS.NOT_FOUND
+                })
+              }
+            })
+          }
+        }
+      },
+      type: {
+        custom: {
+          options: (value) => {
+            if (!Object.values(ConversationsStatus).includes(value as ConversationsStatus)) {
               throw new ErrorWithStatus({
-                messages: USERS_MESSAGES.USER_NOT_FOUND,
-                status: HTTP_STATUS.NOT_FOUND
+                messages: CONVERSATIONS_MESSAGES.TYPE_MUST_BE_PRIVATE_OR_GROUP,
+                status: HTTP_STATUS.BAD_REQUEST
               })
             }
           }
         }
       }
     },
-    ['params']
+    ['body']
   )
+)
+
+export const getAllConversationsValidator = validate(
+  checkSchema({
+    sender_id: {
+      isString: {
+        errorMessage: USERS_MESSAGES.SENDER_ID_MUST_BE_CONTAIN_IS_STRING
+      },
+      custom: {
+        options: async ({ req }) => {
+          const { user_id } = (req as Request).decode_authorization as TokenPayload
+          const user = await databaseService.users.findOne({ _id: new ObjectId(user_id) })
+          if (!user) {
+            throw new ErrorWithStatus({
+              messages: USERS_MESSAGES.USER_NOT_FOUND,
+              status: HTTP_STATUS.NOT_FOUND
+            })
+          }
+          const conversations = await databaseService.conversations
+            .find({
+              sender_id: new ObjectId(user_id)
+            })
+            .toArray()
+          if (!conversations) {
+            throw new ErrorWithStatus({
+              messages: CONVERSATIONS_MESSAGES.NO_CONVERSATION,
+              status: HTTP_STATUS.OK
+            })
+          }
+        }
+      }
+    }
+  })
 )

@@ -59,7 +59,8 @@ export const USERS_MESSAGES = {
   YOU_ARE_NOT_ELIGIBLE_FOR_REGISTER: 'You are not eligible for registration',
   USER_HAS_BEEN_BANNED_NO_GET_PROFILE: 'User has been banned no get profile',
   UPLOAD_SUCCESS: 'Upload success',
-  GET_VIDEO_STATUS_SUCCESS: 'Get video status success'
+  GET_VIDEO_STATUS_SUCCESS: 'Get video status success',
+  SENDER_ID_MUST_BE_CONTAIN_IS_STRING: 'Sender ID must be contain is string'
 }
 export const MAKE_FRIENDS_MESSAGES = {
   FRIEND_NOT_FOUND: 'Friend not found',
@@ -80,4 +81,10 @@ export const BANNED_MESSAGES = {
   USER_HAS_BEEN_BANNED: 'User has been banned',
   USER_HAS_BEEN_UN_BANNED: 'User has been un banned',
   CANNOT_UN_BAN_YOURSELF: 'Cannot un ban yourself'
+}
+export const CONVERSATIONS_MESSAGES = {
+  GET_CONVERSATION_SUCCESSFULLY: 'Get conversation successfully',
+  NO_CONVERSATION: 'No conversation',
+  GET_ALL_CONVERSATION_SUCCESSFULLY: 'Get all conversation successfully',
+  TYPE_MUST_BE_PRIVATE_OR_GROUP: 'Type must be private or group'
 }
