@@ -91,6 +91,19 @@ class FriendsShipServices {
     )
     return result
   }
+  async searchFriends(user_id: string, search: string) {
+    const friends = await databaseService.friendShip
+      .find({
+        user_id: new ObjectId(user_id)
+      })
+      .toArray()
+    const friend_suggestions = await databaseService.users
+      .find({
+        $and: [{ _id: { $nin: friends.map((f) => f.friend_id) } }, { username: { $regex: search, $options: 'i' } }]
+      })
+      .toArray()
+    return friend_suggestions
+  }
 }
 
 const friendsShipServices = new FriendsShipServices()

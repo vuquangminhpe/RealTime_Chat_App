@@ -71,3 +71,12 @@ export const rejectFriendRequestController = async (req: Request<ParamsDictionar
     result
   })
 }
+export const searchFriendsController = async (req: Request<ParamsDictionary, any, any>, res: Response) => {
+  const { user_id } = req.decode_authorization as TokenPayload
+  const { search } = req.query
+  const result = await friendsShipServices.searchFriends(user_id, search as string)
+  res.json({
+    message: FRIENDS_SHIP_MESSAGES.GET_FRIENDS_SUCCESSFULLY,
+    result
+  })
+}

@@ -7,14 +7,17 @@ import {
   getAllFriendsController,
   getFriendRequestsController,
   rejectFriendRequestController,
+  searchFriendsController,
   unFriendsController
 } from '~/controllers/friendsShip.controllers'
 import {
   acceptFriendsValidator,
   addFriendsValidator,
   rejectFriendsValidator,
+  searchFriendsValidator,
   unFriendsValidator
 } from '~/middlewares/friendsShip.middlewares'
+import { paginationValidator } from '~/middlewares/supports.middlewares'
 import { accessTokenValidator, verifyUserValidator } from '~/middlewares/users.middlewares'
 import { wrapAsync } from '~/utils/handler'
 
@@ -100,14 +103,30 @@ friendShipsRouter.post(
 /**
  * Description:reject friend request
  * Path: /accept/:request_id
- * method: GET
+ * method: Delete
  * headers: {access_token: string}
  * params: {reject_friend_id: string}
  */
-friendShipsRouter.post(
+friendShipsRouter.delete(
   '/reject/:reject_friend_id',
   accessTokenValidator,
   verifyUserValidator,
   rejectFriendsValidator,
   wrapAsync(rejectFriendRequestController)
+)
+
+/**
+ * Description:search friend request
+ * Path: //search-friends
+ * method: GET
+ * headers: {access_token: string}
+ * query: {search: string}
+ */
+friendShipsRouter.get(
+  '/search-friends',
+  accessTokenValidator,
+  verifyUserValidator,
+  paginationValidator,
+  searchFriendsValidator,
+  wrapAsync(searchFriendsController)
 )

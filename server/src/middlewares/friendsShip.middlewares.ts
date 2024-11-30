@@ -175,3 +175,13 @@ export const rejectFriendsValidator = validate(
     }
   })
 )
+
+export const searchFriendsValidator = validate(
+  checkSchema({
+    search: {
+      notEmpty: {
+        errorMessage: FRIENDS_SHIP_MESSAGES.SEARCH_IS_REQUIRED
+      }
+    }
+  })
+)

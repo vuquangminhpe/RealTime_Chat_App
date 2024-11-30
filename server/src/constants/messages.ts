@@ -78,7 +78,9 @@ export const FRIENDS_SHIP_MESSAGES = {
   FRIEND_REQUEST_REJECTED_SUCCESSFULLY: 'Friend request rejected successfully',
   GET_FRIEND_REQUESTS_SUCCESSFULLY: 'Get friend requests successfully',
   GET_ALL_FRIENDS_SUCCESSFULLY: 'Get all friends successfully',
-  GET_FRIEND_SUGGESTIONS_SUCCESSFULLY: 'Get friend suggestions successfully'
+  GET_FRIEND_SUGGESTIONS_SUCCESSFULLY: 'Get friend suggestions successfully',
+  SEARCH_IS_REQUIRED: 'Search is required',
+  GET_FRIENDS_SUCCESSFULLY: 'Get friends successfully'
 }
 
 export const BANNED_MESSAGES = {
