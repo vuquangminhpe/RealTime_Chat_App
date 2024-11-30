@@ -1,5 +1,6 @@
 import { Router } from 'express'
 import {
+  acceptFriendRequestController,
   addFriendsController,
   friendshipSuggestionsController,
   getAllFriendsController,

@@ -66,6 +66,9 @@ class MakeFriendServices {
       {
         $set: {
           status: MakeFriendStatus.accepted
+        },
+        $currentDate: {
+          updated_at: true
         }
       }
     )
