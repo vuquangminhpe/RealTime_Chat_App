@@ -18,7 +18,7 @@ export const envConfig = {
   Bucket_Name: process.env.S3_BUCKET_NAME,
   usersCollection: process.env.DB_USERS_COLLECTION as string,
   refreshCollection: process.env.DB_REFRESH_TOKENS_COLLECTION as string,
-  makeFriendCollection: process.env.DB_MAKES_FRIEND_COLLECTION as string,
+  friendsShipCollection: process.env.DB_FRIEND_SHIP_COLLECTION as string,
   banUserCollection: process.env.DB_BAN_USER_COLLECTION as string,
   VideoStatusCollection: process.env.DB_VIDEO_STATUS_COLLECTION as string,
   storiesCollection: process.env.DB_STORIES_COLLECTION as string,

@@ -36,7 +36,7 @@ class DatabaseService {
     return this.db.collection(envConfig.refreshCollection)
   }
   get friendShip(): Collection<FriendsShip> {
-    return this.db.collection(envConfig.makeFriendCollection)
+    return this.db.collection(envConfig.friendsShipCollection)
   }
   get bannedUsers(): Collection<BanUser> {
     return this.db.collection(envConfig.banUserCollection)
