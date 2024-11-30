@@ -1,5 +1,4 @@
 import { Router } from 'express'
-import { reject } from 'lodash'
 import {
   acceptFriendRequestController,
   addFriendsController,
