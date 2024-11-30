@@ -29,6 +29,7 @@ export const friendshipSuggestionsController = async (req: Request<ParamsDiction
   const { user_id } = (req as Request).decode_authorization as TokenPayload
   const friend_suggestions = await friendsShipServices.friendshipSuggestions(user_id)
   res.json({
+    message: FRIENDS_SHIP_MESSAGES.GET_FRIEND_SUGGESTIONS_SUCCESSFULLY,
     result: friend_suggestions
   })
 }
@@ -37,6 +38,7 @@ export const getAllFriendsController = async (req: Request<ParamsDictionary, any
   const { user_id } = (req as Request).decode_authorization as TokenPayload
   const friends = await friendsShipServices.getAllFriends(user_id)
   res.json({
+    message: FRIENDS_SHIP_MESSAGES.GET_ALL_FRIENDS_SUCCESSFULLY,
     result: friends
   })
 }
@@ -45,16 +47,27 @@ export const getFriendRequestsController = async (req: Request<ParamsDictionary,
   const { user_id } = (req as Request).decode_authorization as TokenPayload
   const friend_requests = await friendsShipServices.getFriendRequests(user_id)
   res.json({
+    message: FRIENDS_SHIP_MESSAGES.GET_FRIEND_REQUESTS_SUCCESSFULLY,
     result: friend_requests
   })
 }
 
 export const acceptFriendRequestController = async (req: Request<ParamsDictionary, any, any>, res: Response) => {
-  const { friend_id } = req.body
+  const { friend_id } = req.params
   const { user_id } = req.decode_authorization as TokenPayload
   const result = await friendsShipServices.acceptFriendRequest(friend_id, user_id)
   res.json({
-    message: FRIENDS_SHIP_MESSAGES.FRIEND_REQUEST_ACCEPTED,
+    message: FRIENDS_SHIP_MESSAGES.FRIEND_REQUEST_ACCEPTED_SUCCESSFULLY,
+    result
+  })
+}
+
+export const rejectFriendRequestController = async (req: Request<ParamsDictionary, any, any>, res: Response) => {
+  const { friend_id } = req.params
+  const { user_id } = req.decode_authorization as TokenPayload
+  const result = await friendsShipServices.rejectFriendRequest(friend_id, user_id)
+  res.json({
+    message: FRIENDS_SHIP_MESSAGES.FRIEND_REQUEST_REJECTED_SUCCESSFULLY,
     result
   })
 }

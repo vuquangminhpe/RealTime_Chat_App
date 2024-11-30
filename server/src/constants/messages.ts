@@ -71,7 +71,14 @@ export const FRIENDS_SHIP_MESSAGES = {
   CANNOT_ADD_YOURSELF: 'Cannot add yourself',
   USER_IS_BANNED: 'User is banned',
   FRIEND_REQUEST_ACCEPTED: 'Friend request accepted',
-  YOU_HAVE_BEEN_CONNECTED_TO_THIS_USER: 'You have been connected to this user'
+  YOU_HAVE_BEEN_CONNECTED_TO_THIS_USER: 'You have been connected to this user',
+  YOU_HAVE_BEEN_REJECT_TO_THIS_USER: 'You have been reject to this user',
+  YOU_HAVE_BEEN_BLOCKED_TO_THIS_USER: 'You have been blocked to this user',
+  FRIEND_REQUEST_ACCEPTED_SUCCESSFULLY: 'Friend request accepted successfully',
+  FRIEND_REQUEST_REJECTED_SUCCESSFULLY: 'Friend request rejected successfully',
+  GET_FRIEND_REQUESTS_SUCCESSFULLY: 'Get friend requests successfully',
+  GET_ALL_FRIENDS_SUCCESSFULLY: 'Get all friends successfully',
+  GET_FRIEND_SUGGESTIONS_SUCCESSFULLY: 'Get friend suggestions successfully'
 }
 
 export const BANNED_MESSAGES = {

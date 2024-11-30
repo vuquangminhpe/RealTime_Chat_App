@@ -138,3 +138,40 @@ export const acceptFriendsValidator = validate(
     ['params']
   )
 )
+
+export const rejectFriendsValidator = validate(
+  checkSchema({
+    reject_friend_id: {
+      notEmpty: { errorMessage: FRIENDS_SHIP_MESSAGES.FRIEND_NOT_FOUND },
+      custom: {
+        options: async (value: string, { req }) => {
+          const { user_id } = (req as Request).decode_authorization as TokenPayload
+          const friend_id = await databaseService.friendShip.findOne({
+            friend_id: new ObjectId(user_id),
+            user_id: new ObjectId(value)
+          })
+          if (!friend_id) {
+            throw new ErrorWithStatus({
+              messages: FRIENDS_SHIP_MESSAGES.FRIEND_NOT_FOUND,
+              status: HTTP_STATUS.NOT_FOUND
+            })
+          }
+          if (friend_id.status === FriendsShipStatus.rejected) {
+            throw new ErrorWithStatus({
+              messages: FRIENDS_SHIP_MESSAGES.YOU_HAVE_BEEN_REJECT_TO_THIS_USER,
+              status: HTTP_STATUS.CONFLICT
+            })
+          }
+          if (friend_id.status === FriendsShipStatus.blocked) {
+            throw new ErrorWithStatus({
+              messages: FRIENDS_SHIP_MESSAGES.YOU_HAVE_BEEN_BLOCKED_TO_THIS_USER,
+              status: HTTP_STATUS.CONFLICT
+            })
+          }
+          req.friend_id = friend_id
+          return true
+        }
+      }
+    }
+  })
+)

@@ -1,13 +1,20 @@
 import { Router } from 'express'
+import { reject } from 'lodash'
 import {
   acceptFriendRequestController,
   addFriendsController,
   friendshipSuggestionsController,
   getAllFriendsController,
   getFriendRequestsController,
+  rejectFriendRequestController,
   unFriendsController
 } from '~/controllers/friendsShip.controllers'
-import { acceptFriendsValidator, addFriendsValidator, unFriendsValidator } from '~/middlewares/friendsShip.middlewares'
+import {
+  acceptFriendsValidator,
+  addFriendsValidator,
+  rejectFriendsValidator,
+  unFriendsValidator
+} from '~/middlewares/friendsShip.middlewares'
 import { accessTokenValidator, verifyUserValidator } from '~/middlewares/users.middlewares'
 import { wrapAsync } from '~/utils/handler'
 
@@ -76,7 +83,7 @@ friendShipsRouter.get(
 )
 
 /**
- * Description: friend request accept
+ * Description:accept friend request
  * Path: /accept/:request_id
  * method: GET
  * headers: {access_token: string}
@@ -91,15 +98,16 @@ friendShipsRouter.post(
 )
 
 /**
- * Description: friend request accept
- * Path: accept/:request_id
+ * Description:reject friend request
+ * Path: /accept/:request_id
  * method: GET
  * headers: {access_token: string}
- * params: {request_id: string}
+ * params: {reject_friend_id: string}
  */
 friendShipsRouter.post(
-  '/reject/:request_id',
+  '/reject/:reject_friend_id',
   accessTokenValidator,
   verifyUserValidator,
+  rejectFriendsValidator,
   wrapAsync(rejectFriendRequestController)
 )

@@ -58,7 +58,7 @@ class FriendsShipServices {
     return friend_requests
   }
   async acceptFriendRequest(friend_id: string, user_id: string) {
-    await databaseService.friendShip.updateOne(
+    const result = await databaseService.friendShip.findOneAndUpdate(
       {
         friend_id: new ObjectId(user_id),
         user_id: new ObjectId(friend_id)
@@ -72,6 +72,24 @@ class FriendsShipServices {
         }
       }
     )
+    return result
+  }
+  async rejectFriendRequest(friend_id: string, user_id: string) {
+    const result = await databaseService.friendShip.findOneAndUpdate(
+      {
+        friend_id: new ObjectId(user_id),
+        user_id: new ObjectId(friend_id)
+      },
+      {
+        $set: {
+          status: FriendsShipStatus.rejected
+        },
+        $currentDate: {
+          updated_at: true
+        }
+      }
+    )
+    return result
   }
 }
 
