@@ -2,7 +2,7 @@ import { MongoClient, Db, Collection } from 'mongodb'
 import { envConfig } from '~/constants/config'
 import BanUser from '~/models/schemas/banUser.schema'
 import Conversations from '~/models/schemas/conversation.schema'
-import MakeFriend from '~/models/schemas/makeFriends.schema'
+import FriendsShip from '~/models/schemas/friendsShip.schema'
 import Reactions from '~/models/schemas/reactions.schema'
 import RefreshToken from '~/models/schemas/refreshToken.schema'
 import Stories from '~/models/schemas/stories.schema'
@@ -35,7 +35,7 @@ class DatabaseService {
   get refreshToken(): Collection<RefreshToken> {
     return this.db.collection(envConfig.refreshCollection)
   }
-  get makeFriend(): Collection<MakeFriend> {
+  get friendShip(): Collection<FriendsShip> {
     return this.db.collection(envConfig.makeFriendCollection)
   }
   get bannedUsers(): Collection<BanUser> {

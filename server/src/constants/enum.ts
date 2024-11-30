@@ -45,7 +45,7 @@ export enum ConversationsStatus {
   group
 }
 
-export enum MakeFriendStatus {
+export enum FriendsShipStatus {
   accepted,
   pending,
   blocked,

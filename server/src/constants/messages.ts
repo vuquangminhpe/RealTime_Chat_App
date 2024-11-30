@@ -62,7 +62,7 @@ export const USERS_MESSAGES = {
   GET_VIDEO_STATUS_SUCCESS: 'Get video status success',
   SENDER_ID_MUST_BE_CONTAIN_IS_STRING: 'Sender ID must be contain is string'
 }
-export const MAKE_FRIENDS_MESSAGES = {
+export const FRIENDS_SHIP_MESSAGES = {
   FRIEND_NOT_FOUND: 'Friend not found',
   ALREADY_FRIEND: 'Already friend',
   FRIEND_ADDED_SUCCESSFULLY: 'Friend add successfully',
@@ -70,7 +70,8 @@ export const MAKE_FRIENDS_MESSAGES = {
   REMOVED_FRIEND_SUCCESSFULLY: 'Removed friend successfully',
   CANNOT_ADD_YOURSELF: 'Cannot add yourself',
   USER_IS_BANNED: 'User is banned',
-  FRIEND_REQUEST_ACCEPTED: 'Friend request accepted'
+  FRIEND_REQUEST_ACCEPTED: 'Friend request accepted',
+  YOU_HAVE_BEEN_CONNECTED_TO_THIS_USER: 'You have been connected to this user'
 }
 
 export const BANNED_MESSAGES = {

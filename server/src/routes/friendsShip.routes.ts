@@ -6,12 +6,12 @@ import {
   getAllFriendsController,
   getFriendRequestsController,
   unFriendsController
-} from '~/controllers/makeFriends.controllers'
-import { addFriendsValidator, unFriendsValidator } from '~/middlewares/makeFriends.middlewares'
+} from '~/controllers/friendsShip.controllers'
+import { acceptFriendsValidator, addFriendsValidator, unFriendsValidator } from '~/middlewares/friendsShip.middlewares'
 import { accessTokenValidator, verifyUserValidator } from '~/middlewares/users.middlewares'
 import { wrapAsync } from '~/utils/handler'
 
-export const makeFriendsRouter = Router()
+export const friendShipsRouter = Router()
 
 /**
  * Description: add friend
@@ -19,7 +19,7 @@ export const makeFriendsRouter = Router()
  * method: POST
  * body: {email: string, password: string}
  */
-makeFriendsRouter.post(
+friendShipsRouter.post(
   '/add',
   accessTokenValidator,
   verifyUserValidator,
@@ -33,7 +33,7 @@ makeFriendsRouter.post(
  * method: POST
  * body: {email: string, password: string}
  */
-makeFriendsRouter.delete(
+friendShipsRouter.delete(
   '/unfriend/:friend_id',
   accessTokenValidator,
   verifyUserValidator,
@@ -47,7 +47,7 @@ makeFriendsRouter.delete(
  * method: GET
  * headers: {access_token: string}
  */
-makeFriendsRouter.get(
+friendShipsRouter.get(
   '/friendship-suggestions',
   accessTokenValidator,
   verifyUserValidator,
@@ -60,30 +60,40 @@ makeFriendsRouter.get(
  * method: GET
  * headers: {access_token: string}
  */
-makeFriendsRouter.get('/all-friends', accessTokenValidator, verifyUserValidator, wrapAsync(getAllFriendsController))
+friendShipsRouter.get('/all-friends', accessTokenValidator, verifyUserValidator, wrapAsync(getAllFriendsController))
 
 /**
  * Description: friend request
- * Path: /friend-requests
+ * Path: /
  * method: GET
  * headers: {access_token: string}
  */
-makeFriendsRouter.get(
-  '/friend-requests',
+friendShipsRouter.get('/requests', accessTokenValidator, verifyUserValidator, wrapAsync(getFriendRequestsController))
+
+/**
+ * Description: friend request accept
+ * Path: /accept/:request_id
+ * method: GET
+ * headers: {access_token: string}
+ * params: {accept_friend_id: string}
+ */
+friendShipsRouter.post(
+  '/accept/:accept_friend_id',
   accessTokenValidator,
   verifyUserValidator,
-  wrapAsync(getFriendRequestsController)
+  acceptFriendsValidator,
+  wrapAsync(acceptFriendRequestController)
 )
 
 /**
  * Description: friend request accept
- * Path: /friend-requests/accept/:request_id
+ * Path: accept/:request_id
  * method: GET
  * headers: {access_token: string}
  */
-makeFriendsRouter.post(
-  '/friend-requests/accept/:request_id',
+friendShipsRouter.post(
+  '/friend-requests/reject/:request_id',
   accessTokenValidator,
   verifyUserValidator,
-  wrapAsync(acceptFriendRequestController)
+  wrapAsync(rejectFriendRequestController)
 )

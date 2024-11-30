@@ -3,7 +3,6 @@ import { envConfig, isProduction } from './constants/config'
 import { createServer } from 'http'
 import { usersRouter } from './routes/users.routes'
 import { defaultErrorHandler } from './middlewares/error.middlewares'
-import { makeFriendsRouter } from './routes/makeFriend.routes'
 import { banUsersRouter } from './routes/banUsers.routes'
 import { initFolderImage, initFolderVideo, initFolderVideoHls } from './utils/file'
 import staticRouter from './routes/static.routes'
@@ -13,6 +12,7 @@ import rateLimit from 'express-rate-limit'
 import helmet from 'helmet'
 import cors, { CorsOptions } from 'cors'
 import initSocket from './utils/socket'
+import { friendShipsRouter } from './routes/friendsShip.routes'
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15p
@@ -35,7 +35,7 @@ initFolderVideo()
 initFolderVideoHls()
 const httpServer = createServer(app)
 app.use('/users', usersRouter)
-app.use('/make_friends', makeFriendsRouter)
+app.use('/friend-requests', friendShipsRouter)
 app.use('/ban_users', banUsersRouter)
 app.use('/static', staticRouter)
 app.use('/medias', mediasRouter)

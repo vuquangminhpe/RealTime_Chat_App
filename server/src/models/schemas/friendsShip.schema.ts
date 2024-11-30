@@ -1,28 +1,28 @@
 import { ObjectId } from 'mongodb'
-import { MakeFriendStatus } from '~/constants/enum'
+import { FriendsShipStatus } from '~/constants/enum'
 
-interface MakeFriendType {
+interface FriendsShipType {
   _id: ObjectId
   user_id: ObjectId
   friend_id: ObjectId
   created_at?: Date
-  status: MakeFriendStatus
+  status?: FriendsShipStatus
 }
 
-class MakeFriend {
+class FriendsShip {
   _id: ObjectId
   user_id: ObjectId
   friend_id: ObjectId
   created_at?: Date
-  status: MakeFriendStatus
+  status?: FriendsShipStatus
 
-  constructor({ _id, user_id, friend_id, created_at, status }: MakeFriendType) {
+  constructor({ _id, user_id, friend_id, created_at, status }: FriendsShipType) {
     this._id = _id
     this.user_id = user_id
     this.friend_id = friend_id
     this.created_at = created_at || new Date()
-    this.status = status || MakeFriendStatus.pending
+    this.status = status || FriendsShipStatus.pending
   }
 }
 
-export default MakeFriend
+export default FriendsShip
