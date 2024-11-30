@@ -3,6 +3,7 @@ import { reject } from 'lodash'
 import {
   acceptFriendRequestController,
   addFriendsController,
+  cancelFriendsRequestController,
   friendshipSuggestionsController,
   getAllFriendsController,
   getFriendRequestsController,
@@ -13,6 +14,7 @@ import {
 import {
   acceptFriendsValidator,
   addFriendsValidator,
+  cancelFriendsRequestValidator,
   rejectFriendsValidator,
   searchFriendsValidator,
   unFriendsValidator
@@ -70,7 +72,13 @@ friendShipsRouter.get(
  * method: GET
  * headers: {access_token: string}
  */
-friendShipsRouter.get('/all-friends', accessTokenValidator, verifyUserValidator, wrapAsync(getAllFriendsController))
+friendShipsRouter.get(
+  '/all-friends',
+  accessTokenValidator,
+  verifyUserValidator,
+  paginationValidator,
+  wrapAsync(getAllFriendsController)
+)
 
 /**
  * Description: get friend request (request accept friend)
@@ -82,6 +90,7 @@ friendShipsRouter.get(
   '/get-requests-accept',
   accessTokenValidator,
   verifyUserValidator,
+  paginationValidator,
   wrapAsync(getFriendRequestsController)
 )
 
@@ -117,7 +126,7 @@ friendShipsRouter.delete(
 
 /**
  * Description:search friend request
- * Path: //search-friends
+ * Path: /search-friends
  * method: GET
  * headers: {access_token: string}
  * query: {search: string}
@@ -129,4 +138,19 @@ friendShipsRouter.get(
   paginationValidator,
   searchFriendsValidator,
   wrapAsync(searchFriendsController)
+)
+
+/**
+ * Description:Cancel friend requests sent to others
+ * Path: /cancel/:request_id
+ * method: GET
+ * headers: {access_token: string}
+ * params: {cancel_request_id: string}
+ */
+friendShipsRouter.delete(
+  '/cancel_request_id',
+  accessTokenValidator,
+  verifyUserValidator,
+  cancelFriendsRequestValidator,
+  wrapAsync(cancelFriendsRequestController)
 )

@@ -80,7 +80,9 @@ export const FRIENDS_SHIP_MESSAGES = {
   GET_ALL_FRIENDS_SUCCESSFULLY: 'Get all friends successfully',
   GET_FRIEND_SUGGESTIONS_SUCCESSFULLY: 'Get friend suggestions successfully',
   SEARCH_IS_REQUIRED: 'Search is required',
-  GET_FRIENDS_SUCCESSFULLY: 'Get friends successfully'
+  GET_FRIENDS_SUCCESSFULLY: 'Get friends successfully',
+  CANCEL_FRIEND_REQUEST_SUCCESSFULLY: 'Cancel friend request successfully',
+  YOU_CAN_NOT_CANCEL_TO_THIS_USER: 'You can not cancel to this user'
 }
 
 export const BANNED_MESSAGES = {

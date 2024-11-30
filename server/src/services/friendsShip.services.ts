@@ -104,6 +104,12 @@ class FriendsShipServices {
       .toArray()
     return friend_suggestions
   }
+  async cancelFriendRequest(friend_id: string, user_id: string) {
+    await databaseService.friendShip.deleteOne({
+      friend_id: new ObjectId(friend_id),
+      user_id: new ObjectId(user_id)
+    })
+  }
 }
 
 const friendsShipServices = new FriendsShipServices()

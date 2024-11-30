@@ -80,3 +80,12 @@ export const searchFriendsController = async (req: Request<ParamsDictionary, any
     result
   })
 }
+
+export const cancelFriendsRequestController = async (req: Request<ParamsDictionary, any, any>, res: Response) => {
+  const { friend_id } = req.params
+  const { user_id } = req.decode_authorization as TokenPayload
+  await friendsShipServices.cancelFriendRequest(friend_id, user_id)
+  res.json({
+    message: FRIENDS_SHIP_MESSAGES.CANCEL_FRIEND_REQUEST_SUCCESSFULLY
+  })
+}
