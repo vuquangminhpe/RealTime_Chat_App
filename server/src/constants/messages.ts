@@ -69,7 +69,8 @@ export const MAKE_FRIENDS_MESSAGES = {
   NOT_FRIEND: 'Not friend',
   REMOVED_FRIEND_SUCCESSFULLY: 'Removed friend successfully',
   CANNOT_ADD_YOURSELF: 'Cannot add yourself',
-  USER_IS_BANNED: 'User is banned'
+  USER_IS_BANNED: 'User is banned',
+  FRIEND_REQUEST_ACCEPTED: 'Friend request accepted'
 }
 
 export const BANNED_MESSAGES = {

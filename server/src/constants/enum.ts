@@ -44,3 +44,10 @@ export enum ConversationsStatus {
   private,
   group
 }
+
+export enum MakeFriendStatus {
+  accepted,
+  pending,
+  blocked,
+  rejected
+}
