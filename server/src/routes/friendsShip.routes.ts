@@ -63,12 +63,17 @@ friendShipsRouter.get(
 friendShipsRouter.get('/all-friends', accessTokenValidator, verifyUserValidator, wrapAsync(getAllFriendsController))
 
 /**
- * Description: friend request
- * Path: /
+ * Description: get friend request (request accept friend)
+ * Path: /get-requests-accept
  * method: GET
  * headers: {access_token: string}
  */
-friendShipsRouter.get('/requests', accessTokenValidator, verifyUserValidator, wrapAsync(getFriendRequestsController))
+friendShipsRouter.get(
+  '/get-requests-accept',
+  accessTokenValidator,
+  verifyUserValidator,
+  wrapAsync(getFriendRequestsController)
+)
 
 /**
  * Description: friend request accept
@@ -90,9 +95,10 @@ friendShipsRouter.post(
  * Path: accept/:request_id
  * method: GET
  * headers: {access_token: string}
+ * params: {request_id: string}
  */
 friendShipsRouter.post(
-  '/friend-requests/reject/:request_id',
+  '/reject/:request_id',
   accessTokenValidator,
   verifyUserValidator,
   wrapAsync(rejectFriendRequestController)
