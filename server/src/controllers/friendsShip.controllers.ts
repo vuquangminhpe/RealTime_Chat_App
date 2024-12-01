@@ -37,7 +37,7 @@ export const friendshipSuggestionsController = async (req: Request<ParamsDiction
     message: FRIENDS_SHIP_MESSAGES.GET_FRIEND_SUGGESTIONS_SUCCESSFULLY,
     result: friend_suggestions,
     page: Number(page),
-    total_pages: total
+    total_pages: Math.ceil(total / Number(limit))
   })
 }
 
@@ -49,7 +49,7 @@ export const getAllFriendsController = async (req: Request<ParamsDictionary, any
     message: FRIENDS_SHIP_MESSAGES.GET_ALL_FRIENDS_SUCCESSFULLY,
     result: friends.friends,
     page: Number(page),
-    total_pages: friends.total
+    total_pages: Math.ceil(friends.total / Number(limit))
   })
 }
 
@@ -90,7 +90,7 @@ export const searchFriendsController = async (req: Request<ParamsDictionary, any
     message: FRIENDS_SHIP_MESSAGES.GET_FRIENDS_SUCCESSFULLY,
     result: result.friend_suggestions,
     page: Number(page),
-    total_pages: result.total
+    total_pages: Math.ceil(result.total / Number(limit))
   })
 }
 

@@ -6,3 +6,7 @@ export interface GetConversationsReqBody {
   type: ConversationsStatus
   content: string
 }
+
+export interface GetAllConversationsReqBody {
+  sender_id: string
+}

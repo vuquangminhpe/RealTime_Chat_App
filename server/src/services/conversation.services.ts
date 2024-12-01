@@ -33,13 +33,18 @@ class ConversationServices {
     const total = await databaseService.conversations.countDocuments(match)
     return { conversations, total: total || 0 }
   }
-  async getAllConversations(sender_id: string) {
+  async getAllConversations(sender_id: string, page: number, limit: number) {
     const conversations = await databaseService.conversations
       .find({
         $or: [{ sender_id: new ObjectId(sender_id) }, { receiver_id: new ObjectId(sender_id) }]
       })
+      .skip(limit * (page - 1))
+      .limit(limit)
       .toArray()
-    return conversations
+    const total = await databaseService.conversations.countDocuments({
+      conversations
+    })
+    return { conversations, total: total || 0 }
   }
 }
 const conversationServices = new ConversationServices()

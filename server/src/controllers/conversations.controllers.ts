@@ -32,9 +32,16 @@ export const getConversationsController = async (
 
 export const getAllConversationsController = async (req: Request<ParamsDictionary, any, any>, res: Response) => {
   const { sender_id } = (req as Request).decode_authorization as TokenPayload
-  const conversations = await conversationServices.getAllConversations(sender_id)
+  const { limit, page } = req.query
+  const { conversations, total } = await conversationServices.getAllConversations(
+    sender_id,
+    Number(page),
+    Number(limit)
+  )
   res.json({
     message: CONVERSATIONS_MESSAGES.GET_ALL_CONVERSATION_SUCCESSFULLY,
-    result: conversations
+    result: conversations,
+    page: Number(page),
+    total_pages: Math.ceil(total / Number(limit))
   })
 }
