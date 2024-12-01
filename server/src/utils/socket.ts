@@ -1,7 +1,7 @@
 import { ExtendedError, Server, Socket } from 'socket.io'
 import { verifyAccessToken } from './common'
 import { TokenPayload } from '~/models/request/User.request'
-import { ConversationsStatus, UserVerifyStatus } from '~/constants/enum'
+import { ConversationsStatus, statusActivityType, UserVerifyStatus } from '~/constants/enum'
 import { ErrorWithStatus } from '~/models/Errors'
 import { USERS_MESSAGES } from '~/constants/messages'
 import HTTP_STATUS from '~/constants/httpStatus'
@@ -38,12 +38,14 @@ const initSocket = (httpServer: ServerHttp) => {
       next(error as ExtendedError)
     }
   })
-  io.on('connection', (socket: Socket) => {
+  io.on('connection', async (socket: Socket) => {
     const { user_id } = socket.handshake.auth
     users[user_id] = { socket_id: socket.id }
-    socket.on('disconnect', async () => {
-      delete users[user_id]
-    })
+    await databaseService.friendShip.updateOne(
+      { user_id: new ObjectId(user_id as string) },
+      { activeStatus: statusActivityType.online }
+    )
+    console.log(`User ${user_id} connected`)
     io.on('send-message', async (data) => {
       let t = ConversationsStatus.private
       const { sender_id, receiver_id, content } = data.payload
@@ -66,6 +68,10 @@ const initSocket = (httpServer: ServerHttp) => {
     })
     socket.on('disconnect', async () => {
       delete users[user_id]
+      await databaseService.friendShip.updateOne(
+        { user_id: new ObjectId(user_id as string) },
+        { activeStatus: statusActivityType.offline }
+      )
       console.log(`User ${user_id} disconnected`)
     })
   })
