@@ -27,19 +27,29 @@ export const unFriendsController = async (req: Request<ParamsDictionary, any, un
 
 export const friendshipSuggestionsController = async (req: Request<ParamsDictionary, any, any>, res: Response) => {
   const { user_id } = (req as Request).decode_authorization as TokenPayload
-  const friend_suggestions = await friendsShipServices.friendshipSuggestions(user_id)
+  const { limit, page } = req.query
+  const { friend_suggestions, total } = await friendsShipServices.friendshipSuggestions(
+    user_id,
+    Number(limit),
+    Number(page)
+  )
   res.json({
     message: FRIENDS_SHIP_MESSAGES.GET_FRIEND_SUGGESTIONS_SUCCESSFULLY,
-    result: friend_suggestions
+    result: friend_suggestions,
+    page: Number(page),
+    total_pages: total
   })
 }
 
 export const getAllFriendsController = async (req: Request<ParamsDictionary, any, any>, res: Response) => {
   const { user_id } = (req as Request).decode_authorization as TokenPayload
-  const friends = await friendsShipServices.getAllFriends(user_id)
+  const { limit, page } = req.query
+  const friends = await friendsShipServices.getAllFriends(user_id, Number(limit), Number(page))
   res.json({
     message: FRIENDS_SHIP_MESSAGES.GET_ALL_FRIENDS_SUCCESSFULLY,
-    result: friends
+    result: friends.friends,
+    page: Number(page),
+    total_pages: friends.total
   })
 }
 
@@ -74,10 +84,13 @@ export const rejectFriendRequestController = async (req: Request<ParamsDictionar
 export const searchFriendsController = async (req: Request<ParamsDictionary, any, any>, res: Response) => {
   const { user_id } = req.decode_authorization as TokenPayload
   const { search } = req.query
-  const result = await friendsShipServices.searchFriends(user_id, search as string)
+  const { limit, page } = req.query
+  const result = await friendsShipServices.searchFriends(user_id, search as string, Number(limit), Number(page))
   res.json({
     message: FRIENDS_SHIP_MESSAGES.GET_FRIENDS_SUCCESSFULLY,
-    result
+    result: result.friend_suggestions,
+    page: Number(page),
+    total_pages: result.total
   })
 }
 

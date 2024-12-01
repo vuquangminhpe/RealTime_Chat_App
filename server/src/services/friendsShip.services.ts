@@ -25,11 +25,12 @@ class FriendsShipServices {
       user_id: new ObjectId(user_id)
     })
   }
-  async friendshipSuggestions(user_id: string) {
+  async friendshipSuggestions(user_id: string, limit: number, page: number) {
     const friend = await databaseService.friendShip
       .find({
         user_id: new ObjectId(user_id)
       })
+
       .toArray()
     const friend_suggestions = await databaseService.users
       .find({
@@ -37,16 +38,22 @@ class FriendsShipServices {
           $nin: friend.map((f) => f.friend_id)
         }
       })
+      .skip(limit * (page - 1))
+      .limit(limit)
       .toArray()
-    return friend_suggestions
+    const total = await databaseService.users.countDocuments(friend_suggestions)
+    return { friend_suggestions, total: total || 0 }
   }
-  async getAllFriends(user_id: string) {
+  async getAllFriends(user_id: string, limit: number, page: number) {
     const friends = await databaseService.friendShip
       .find({
         user_id: new ObjectId(user_id)
       })
+      .skip(limit * (page - 1))
+      .limit(limit)
       .toArray()
-    return friends
+    const total = await databaseService.friendShip.countDocuments(friends)
+    return { friends, total: total || 0 }
   }
   async getFriendRequests(user_id: string) {
     const friend_requests = await databaseService.friendShip
@@ -91,7 +98,7 @@ class FriendsShipServices {
     )
     return result
   }
-  async searchFriends(user_id: string, search: string) {
+  async searchFriends(user_id: string, search: string, limit: number, page: number) {
     const friends = await databaseService.friendShip
       .find({
         user_id: new ObjectId(user_id)
@@ -101,8 +108,11 @@ class FriendsShipServices {
       .find({
         $and: [{ _id: { $nin: friends.map((f) => f.friend_id) } }, { username: { $regex: search, $options: 'i' } }]
       })
+      .skip(limit * (page - 1))
+      .limit(limit)
       .toArray()
-    return friend_suggestions
+    const total = await databaseService.users.countDocuments(friend_suggestions)
+    return { friend_suggestions, total: total || 0 }
   }
   async cancelFriendRequest(friend_id: string, user_id: string) {
     await databaseService.friendShip.deleteOne({
