@@ -51,3 +51,8 @@ export enum FriendsShipStatus {
   blocked,
   rejected
 }
+
+export enum statusActivityType {
+  online,
+  offline
+}
