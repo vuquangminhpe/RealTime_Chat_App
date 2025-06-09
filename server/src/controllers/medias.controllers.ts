@@ -5,7 +5,7 @@ import path from 'path'
 import fs from 'fs'
 import { UPLOAD_IMAGES_DIR, UPLOAD_VIDEO_DIR } from '~/constants/dir'
 import { sendFileFromS3 } from '~/utils/s3'
-import mime from 'mime'
+import mime from 'mime-types'
 export const uploadImageController = async (req: Request, res: Response) => {
   const url = await mediaService.uploadImage(req)
   res.json({ message: USERS_MESSAGES.UPLOAD_SUCCESS, result: url })
@@ -52,7 +52,7 @@ export const serveVideoStreamController = async (req: Request, res: Response, ne
         'Content-Range': `bytes ${start}-${end}/${videoSize}`,
         'Accept-Ranges': 'bytes',
         'Content-Length': chunksize,
-        'Content-Type': mime.getType(videoPath) || 'video/mp4'
+        'Content-Type': mime.lookup(videoPath) || 'video/mp4'
       }
 
       res.writeHead(206, head)
@@ -60,7 +60,7 @@ export const serveVideoStreamController = async (req: Request, res: Response, ne
     } else {
       const head = {
         'Content-Length': videoSize,
-        'Content-Type': mime.getType(videoPath) || 'video/mp4'
+        'Content-Type': mime.lookup(videoPath) || 'video/mp4'
       }
       res.writeHead(200, head)
       fs.createReadStream(videoPath).pipe(res)

@@ -5,7 +5,7 @@ import { UPLOAD_IMAGES_DIR, UPLOAD_VIDEO_DIR, UPLOAD_VIDEO_HLS_DIR } from '~/con
 import path from 'path'
 import fs from 'fs'
 import fsPromise from 'fs/promises'
-import mime from 'mime'
+import mime from 'mime-types'
 import { envConfig, isProduction } from '~/constants/config'
 import { encodeHLSWithMultipleVideoStreams } from '~/utils/video'
 import databaseService from './database.services'
@@ -60,7 +60,7 @@ class Queue {
           return uploadFileS3({
             filePath: filepath,
             filename: fileName,
-            contentType: mime.getType(filepath) as string
+            contentType: mime.lookup(filepath) as string
           })
         })
         fs.unlinkSync(videoPath)
@@ -117,7 +117,7 @@ class MediaService {
         const s3Result = await uploadFileS3({
           filename: 'Images/' + newFullFileName,
           filePath: newPath,
-          contentType: mime.getType(newFullFileName) as string
+          contentType: mime.lookup(newFullFileName) as string
         })
         await Promise.all([fsPromise.unlink(file.filepath), fsPromise.unlink(newPath)])
         return {
