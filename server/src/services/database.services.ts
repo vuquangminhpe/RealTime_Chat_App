@@ -2,6 +2,7 @@ import { MongoClient, Db, Collection } from 'mongodb'
 import { envConfig } from '~/constants/config'
 import BanUser from '~/models/schemas/banUser.schema'
 import Conversations from '~/models/schemas/conversation.schema'
+import ConversationSettings from '~/models/schemas/conversationSetting.schema'
 import FriendsShip from '~/models/schemas/friendsShip.schema'
 import GroupMember from '~/models/schemas/groupMember.schema'
 import Like from '~/models/schemas/like.schema'
@@ -68,6 +69,9 @@ class DatabaseService {
   }
   get notifications(): Collection<Notification> {
     return this.db.collection(envConfig.notificationsCollection)
+  }
+  get conversationSettings(): Collection<ConversationSettings> | null {
+    return this.db.collection(envConfig.conversationSettingsCollection) || null
   }
 }
 
