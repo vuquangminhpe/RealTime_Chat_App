@@ -63,7 +63,7 @@
  *       ```javascript
  *       const socket = io('http://localhost:3000', {
  *         auth: {
- *           Authorization: 'Bearer your_jwt_token_here'
+ *           Authorization: 'Bearer token 12312312312fdsdfwef'
  *         }
  *       });
  *       ```
