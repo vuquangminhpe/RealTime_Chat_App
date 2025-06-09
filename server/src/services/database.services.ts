@@ -3,6 +3,7 @@ import { envConfig } from '~/constants/config'
 import BanUser from '~/models/schemas/banUser.schema'
 import Conversations from '~/models/schemas/conversation.schema'
 import FriendsShip from '~/models/schemas/friendsShip.schema'
+import Like from '~/models/schemas/like.schema'
 import Message from '~/models/schemas/message.chema'
 import Reactions from '~/models/schemas/reactions.schema'
 import RefreshToken from '~/models/schemas/refreshToken.schema'
@@ -56,6 +57,9 @@ class DatabaseService {
   }
   get messages(): Collection<Message> {
     return this.db.collection(envConfig.messagesCollection)
+  }
+  get likes(): Collection<Like> {
+    return this.db.collection(envConfig.likesCollection)
   }
 }
 
