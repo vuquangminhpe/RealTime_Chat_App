@@ -21,8 +21,8 @@ import { likesRouter } from './routes/likes.routes'
 import { notificationsRouter } from './routes/notifications.routes'
 import { groupChatRouter } from './routes/groupChat.routes'
 import databaseService from './services/database.services'
-import { setupSwaggerDocs } from './Swagger/socketDocs'
 import storiesServices from './services/stories.services'
+import { setupSwaggerDocs } from './Swagger/setupSwaggerDocs'
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
