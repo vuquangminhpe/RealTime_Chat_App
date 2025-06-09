@@ -38,7 +38,7 @@ export const getLikesController = async (
 ) => {
   const { target_id, target_type } = req.query
   const { limit, page } = req.query
-  const likes = await likesServices.getLikes(target_id as string, target_type as string, Number(limit), Number(page))
+  const likes = await likesServices.getLikes(target_id as string, target_type as any, Number(limit), Number(page))
   res.json({
     message: LIKES_MESSAGES.GET_LIKES_SUCCESS,
     result: likes.likes,
@@ -71,7 +71,7 @@ export const checkLikeStatusController = async (
 ) => {
   const { user_id } = req.decode_authorization as TokenPayload
   const { target_id, target_type } = req.query
-  const isLiked = await likesServices.checkLikeStatus(user_id, target_id as string, target_type as string)
+  const isLiked = await likesServices.checkLikeStatus(user_id, target_id as string, target_type as any)
   res.json({
     message: LIKES_MESSAGES.CHECK_LIKE_STATUS_SUCCESS,
     result: { is_liked: isLiked }

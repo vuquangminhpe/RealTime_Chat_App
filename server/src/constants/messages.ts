@@ -147,3 +147,63 @@ export const MESSAGES_MESSAGES = {
   MESSAGE_ID_REQUIRED: 'Message ID is required',
   SEARCH_TERM_REQUIRED: 'Search term is required'
 }
+
+export const LIKES_MESSAGES = {
+  LIKE_SUCCESS: 'Like successfully',
+  UNLIKE_SUCCESS: 'Unlike successfully',
+  GET_LIKES_SUCCESS: 'Get likes successfully',
+  GET_USER_LIKES_SUCCESS: 'Get user likes successfully',
+  CHECK_LIKE_STATUS_SUCCESS: 'Check like status successfully',
+  ALREADY_LIKED: 'Already liked this target',
+  LIKE_NOT_FOUND: 'Like not found',
+  TARGET_NOT_FOUND: 'Target not found',
+  TARGET_ID_REQUIRED: 'Target ID is required',
+  TARGET_ID_MUST_BE_STRING: 'Target ID must be a string',
+  TARGET_TYPE_REQUIRED: 'Target type is required',
+  INVALID_TARGET_TYPE: 'Invalid target type'
+}
+
+export const GROUP_CHAT_MESSAGES = {
+  CREATE_GROUP_SUCCESS: 'Create group successfully',
+  ADD_MEMBER_SUCCESS: 'Add member successfully',
+  REMOVE_MEMBER_SUCCESS: 'Remove member successfully',
+  LEAVE_GROUP_SUCCESS: 'Leave group successfully',
+  UPDATE_GROUP_SUCCESS: 'Update group successfully',
+  GET_GROUP_INFO_SUCCESS: 'Get group info successfully',
+  GET_GROUP_MEMBERS_SUCCESS: 'Get group members successfully',
+  GET_USER_GROUPS_SUCCESS: 'Get user groups successfully',
+  MAKE_ADMIN_SUCCESS: 'Make admin successfully',
+  REMOVE_ADMIN_SUCCESS: 'Remove admin successfully',
+  GROUP_NOT_FOUND: 'Group not found',
+  NOT_GROUP_MEMBER: 'You are not a member of this group',
+  MEMBER_NOT_FOUND: 'Member not found in this group',
+  MEMBER_ALREADY_IN_GROUP: 'Member is already in this group',
+  CANNOT_REMOVE_OWNER: 'Cannot remove group owner',
+  OWNER_CANNOT_LEAVE: 'Owner cannot leave group, transfer ownership first',
+  ADMIN_PERMISSION_REQUIRED: 'Admin permission required',
+  OWNER_PERMISSION_REQUIRED: 'Owner permission required',
+  ALREADY_ADMIN: 'User is already an admin',
+  GROUP_NAME_REQUIRED: 'Group name is required',
+  MEMBER_IDS_REQUIRED: 'Member IDs are required'
+}
+
+export const NOTIFICATIONS_MESSAGES = {
+  GET_NOTIFICATIONS_SUCCESS: 'Get notifications successfully',
+  MARK_READ_SUCCESS: 'Mark notification as read successfully',
+  MARK_ALL_READ_SUCCESS: 'Mark all notifications as read successfully',
+  DELETE_NOTIFICATION_SUCCESS: 'Delete notification successfully',
+  GET_UNREAD_COUNT_SUCCESS: 'Get unread count successfully',
+  CLEAR_ALL_SUCCESS: 'Clear all notifications successfully',
+  NOTIFICATION_NOT_FOUND: 'Notification not found',
+  NOTIFICATION_ID_REQUIRED: 'Notification ID is required',
+  INVALID_NOTIFICATION_ID: 'Invalid notification ID'
+}
+export const ERROR_MESSAGES = {
+  INTERNAL_SERVER_ERROR: 'Internal server error',
+  NOT_FOUND: 'Not found',
+  UNAUTHORIZED: 'Unauthorized',
+  FORBIDDEN: 'Forbidden',
+  BAD_REQUEST: 'Bad request',
+  CONFLICT: 'Conflict',
+  SERVICE_UNAVAILABLE: 'Service unavailable'
+}

@@ -72,7 +72,7 @@ class LikesServices {
     })
   }
 
-  async getLikes(target_id: string, target_type: string, limit: number, page: number) {
+  async getLikes(target_id: string, target_type: LikeTargetTypes, limit: number, page: number) {
     const likes = await databaseService.likes
       .find({ target_id, target_type })
       .sort({ created_at: -1 })
@@ -115,7 +115,7 @@ class LikesServices {
 
         switch (like.target_type) {
           case LikeTargetTypes.Story:
-            target = await databaseService.stories.findOne({ _id: like.target_id })
+            target = await databaseService.stories.findOne({ _id: new ObjectId(like.target_id) })
             if (target) {
               targetUser = await databaseService.users.findOne(
                 { _id: new ObjectId(target.user_id) },
@@ -154,7 +154,7 @@ class LikesServices {
     return { likes: likesWithTargetInfo, total }
   }
 
-  async checkLikeStatus(user_id: string, target_id: string, target_type: string): Promise<boolean> {
+  async checkLikeStatus(user_id: string, target_id: string, target_type: LikeTargetTypes): Promise<boolean> {
     const like = await databaseService.likes.findOne({
       user_id: new ObjectId(user_id),
       target_id,
@@ -164,7 +164,7 @@ class LikesServices {
     return !!like
   }
 
-  async getLikeCount(target_id: string, target_type: string): Promise<number> {
+  async getLikeCount(target_id: string, target_type: LikeTargetTypes): Promise<number> {
     return await databaseService.likes.countDocuments({ target_id, target_type })
   }
 

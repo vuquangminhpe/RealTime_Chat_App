@@ -6,7 +6,7 @@ export enum LikeTargetTypes {
   User = 'user'
 }
 
-interface LikeType {
+export interface LikeType {
   _id?: ObjectId
   user_id: ObjectId
   target_id: string
