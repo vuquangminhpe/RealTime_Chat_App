@@ -3,10 +3,11 @@ import { envConfig } from '~/constants/config'
 import BanUser from '~/models/schemas/banUser.schema'
 import Conversations from '~/models/schemas/conversation.schema'
 import FriendsShip from '~/models/schemas/friendsShip.schema'
+import Message from '~/models/schemas/message.chema'
 import Reactions from '~/models/schemas/reactions.schema'
 import RefreshToken from '~/models/schemas/refreshToken.schema'
 import Stories from '~/models/schemas/stories.schema'
-import User from '~/models/schemas/users.schema'
+import User from '~/models/schemas/Users.schema'
 import VideoStatus from '~/models/schemas/VideoStatus.schema'
 
 const uri = `mongodb+srv://${envConfig.db_username}:${envConfig.db_password}@minhdevmongo.hzvnp.mongodb.net/?retryWrites=true&w=majority&appName=minhdevMongo`
@@ -52,6 +53,9 @@ class DatabaseService {
   }
   get conversations(): Collection<Conversations> {
     return this.db.collection(envConfig.conversationsCollection)
+  }
+  get messages(): Collection<Message> {
+    return this.db.collection(envConfig.messagesCollection)
   }
 }
 

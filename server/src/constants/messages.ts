@@ -62,6 +62,7 @@ export const USERS_MESSAGES = {
   GET_VIDEO_STATUS_SUCCESS: 'Get video status success',
   SENDER_ID_MUST_BE_CONTAIN_IS_STRING: 'Sender ID must be contain is string'
 }
+
 export const FRIENDS_SHIP_MESSAGES = {
   FRIEND_NOT_FOUND: 'Friend not found',
   ALREADY_FRIEND: 'Already friend',
@@ -95,9 +96,54 @@ export const BANNED_MESSAGES = {
   USER_HAS_BEEN_UN_BANNED: 'User has been un banned',
   CANNOT_UN_BAN_YOURSELF: 'Cannot un ban yourself'
 }
+
 export const CONVERSATIONS_MESSAGES = {
   GET_CONVERSATION_SUCCESSFULLY: 'Get conversation successfully',
   NO_CONVERSATION: 'No conversation',
   GET_ALL_CONVERSATION_SUCCESSFULLY: 'Get all conversation successfully',
   TYPE_MUST_BE_PRIVATE_OR_GROUP: 'Type must be private or group'
+}
+
+export const STORIES_MESSAGES = {
+  ADD_STORY_SUCCESS: 'Add story successfully',
+  GET_STORIES_SUCCESS: 'Get stories successfully',
+  DELETE_STORY_SUCCESS: 'Delete story successfully',
+  GET_USER_STORIES_SUCCESS: 'Get user stories successfully',
+  STORY_NOT_FOUND: 'Story not found',
+  NOT_YOUR_STORY: 'You can only delete your own stories',
+  CONTENT_IS_REQUIRED: 'Content is required',
+  INVALID_CONTENT_TYPE: 'Invalid content type',
+  TEXT_MUST_BE_STRING: 'Text must be a string',
+  TEXT_TOO_LONG: 'Text is too long (max 500 characters)',
+  STORY_ID_REQUIRED: 'Story ID is required'
+}
+
+export const REACTIONS_MESSAGES = {
+  ADD_REACTION_SUCCESS: 'Add reaction successfully',
+  REMOVE_REACTION_SUCCESS: 'Remove reaction successfully',
+  GET_REACTIONS_SUCCESS: 'Get reactions successfully',
+  GET_USER_REACTIONS_SUCCESS: 'Get user reactions successfully',
+  REACTION_NOT_FOUND: 'Reaction not found',
+  TARGET_ID_REQUIRED: 'Target ID is required',
+  TARGET_ID_MUST_BE_STRING: 'Target ID must be a string',
+  TARGET_TYPE_REQUIRED: 'Target type is required',
+  INVALID_TARGET_TYPE: 'Invalid target type',
+  REACTION_TYPE_REQUIRED: 'Reaction type is required',
+  INVALID_REACTION_TYPE: 'Invalid reaction type'
+}
+
+export const MESSAGES_MESSAGES = {
+  SEND_MESSAGE_SUCCESS: 'Send message successfully',
+  GET_MESSAGES_SUCCESS: 'Get messages successfully',
+  EDIT_MESSAGE_SUCCESS: 'Edit message successfully',
+  DELETE_MESSAGE_SUCCESS: 'Delete message successfully',
+  MARK_READ_SUCCESS: 'Mark messages as read successfully',
+  SEARCH_MESSAGES_SUCCESS: 'Search messages successfully',
+  MESSAGE_NOT_FOUND: 'Message not found',
+  NOT_YOUR_MESSAGE: 'You can only edit/delete your own messages',
+  NOT_CONVERSATION_PARTICIPANT: 'You are not a participant in this conversation',
+  CONVERSATION_ID_REQUIRED: 'Conversation ID is required',
+  CONTENT_IS_REQUIRED: 'Content is required',
+  MESSAGE_ID_REQUIRED: 'Message ID is required',
+  SEARCH_TERM_REQUIRED: 'Search term is required'
 }

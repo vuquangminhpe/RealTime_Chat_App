@@ -1,7 +1,8 @@
+import { ObjectId } from 'mongodb'
 import { ReactionStatus } from '~/constants/enum'
 
 export interface reactionsType {
-  _id: string
+  _id: ObjectId
   user_reactions_id: string
   story_id: string
   reaction_type: ReactionStatus
@@ -9,7 +10,7 @@ export interface reactionsType {
 }
 
 class Reactions {
-  _id: string
+  _id: ObjectId
   user_reactions_id: string
   story_id: string
   reaction_type: ReactionStatus

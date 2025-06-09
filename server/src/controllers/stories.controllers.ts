@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express'
 import { ParamsDictionary } from 'express-serve-static-core'
-import { AddStoryReqBody, GetStoriesReqBody } from '~/models/request/Stories.requests'
+import { AddStoryReqBody, GetStoriesReqBody } from '~/models/request/Story.request'
 import { TokenPayload } from '~/models/request/User.request'
 import storiesServices from '~/services/stories.services'
 import { STORIES_MESSAGES } from '~/constants/messages'

@@ -9,7 +9,7 @@ import HTTP_STATUS from '~/constants/httpStatus'
 
 class ReactionsServices {
   async addReaction(user_id: string, body: AddReactionReqBody) {
-    const { target_id, target_type, reaction_type } = body
+    const { target_id, reaction_type } = body
 
     // Check if user already reacted to this target
     const existingReaction = await databaseService.reactions.findOne({
@@ -32,13 +32,13 @@ class ReactionsServices {
         },
         { returnDocument: 'after' }
       )
-      return result.value
+      return result
     } else {
       // Create new reaction
       const _id = new ObjectId()
       const reaction = await databaseService.reactions.insertOne(
         new Reactions({
-          _id: _id.toString(),
+          _id,
           user_reactions_id: user_id,
           story_id: target_id,
           reaction_type
@@ -133,7 +133,7 @@ class ReactionsServices {
     const reactionsWithTargetInfo = await Promise.all(
       reactions.map(async (reaction) => {
         // For now, assuming target is story
-        const story = await databaseService.stories.findOne({ _id: reaction.story_id })
+        const story = await databaseService.stories.findOne({ _id: new ObjectId(reaction.story_id) })
         let targetUser = null
 
         if (story) {

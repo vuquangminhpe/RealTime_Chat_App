@@ -7,6 +7,7 @@ import { TokenPayload } from '~/models/request/User.request'
 import { Request } from 'express'
 import { ErrorWithStatus } from '~/models/Errors'
 import HTTP_STATUS from '~/constants/httpStatus'
+import { ObjectId } from 'mongodb'
 
 export const addStoryValidator = validate(
   checkSchema(
@@ -51,7 +52,7 @@ export const deleteStoryValidator = validate(
         custom: {
           options: async (value: string, { req }) => {
             const { user_id } = (req as Request).decode_authorization as TokenPayload
-            const story = await databaseService.stories.findOne({ _id: value })
+            const story = await databaseService.stories.findOne({ _id: new ObjectId(value) })
 
             if (!story) {
               throw new ErrorWithStatus({

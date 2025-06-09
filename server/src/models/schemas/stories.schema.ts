@@ -1,7 +1,8 @@
+import { ObjectId } from 'mongodb'
 import { StoriesDataType } from '~/constants/enum'
 
 export interface StoriesType {
-  _id: string
+  _id: ObjectId
   user_id: string
   content: StoriesDataType
   created_at?: Date
@@ -10,7 +11,7 @@ export interface StoriesType {
 }
 
 class Stories {
-  _id: string
+  _id: ObjectId
   user_id: string
   content: StoriesDataType
   created_at?: Date

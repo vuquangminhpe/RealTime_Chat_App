@@ -14,7 +14,7 @@ class StoriesServices {
 
     const story = await databaseService.stories.insertOne(
       new Stories({
-        _id: _id.toString(),
+        _id,
         user_id,
         content: body.content,
         expire_at: expireDate
@@ -67,7 +67,7 @@ class StoriesServices {
   }
 
   async deleteStory(story_id: string, user_id: string) {
-    const story = await databaseService.stories.findOne({ _id: story_id })
+    const story = await databaseService.stories.findOne({ _id: new ObjectId(story_id) })
 
     if (!story) {
       throw new ErrorWithStatus({
@@ -83,7 +83,7 @@ class StoriesServices {
       })
     }
 
-    await databaseService.stories.deleteOne({ _id: story_id })
+    await databaseService.stories.deleteOne({ _id: new ObjectId(story_id) })
   }
 
   async getUserStories(username: string, limit: number, page: number) {
