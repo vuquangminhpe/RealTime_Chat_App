@@ -62,6 +62,6 @@ export const setupSwaggerDocs = (app: express.Express) => {
     })
   })
 
-  console.log('📚 Swagger documentation available at /api-docs')
-  console.log('ℹ️  API information available at /api')
+  console.log(' Swagger documentation available at /api-docs')
+  console.log('  API information available at /api')
 }

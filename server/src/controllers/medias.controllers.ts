@@ -2,29 +2,29 @@ import { Response, Request, NextFunction } from 'express'
 import { USERS_MESSAGES } from '~/constants/messages'
 import mediaService from '~/services/medias.services'
 import path from 'path'
-import mime from 'mime'
 import fs from 'fs'
 import { UPLOAD_IMAGES_DIR, UPLOAD_VIDEO_DIR } from '~/constants/dir'
 import { sendFileFromS3 } from '~/utils/s3'
-export const uploadImageController = async (req: Request, res: Response, next: NextFunction) => {
+import mime from 'mime'
+export const uploadImageController = async (req: Request, res: Response) => {
   const url = await mediaService.uploadImage(req)
   res.json({ message: USERS_MESSAGES.UPLOAD_SUCCESS, result: url })
 }
-export const uploadVideoController = async (req: Request, res: Response, next: NextFunction) => {
+export const uploadVideoController = async (req: Request, res: Response) => {
   const url = await mediaService.uploadVideo(req)
   res.json({ message: USERS_MESSAGES.UPLOAD_SUCCESS, result: url })
 }
-export const uploadVideoHLSController = async (req: Request, res: Response, next: NextFunction) => {
+export const uploadVideoHLSController = async (req: Request, res: Response) => {
   const url = await mediaService.uploadVideoHLS(req)
   res.json({ message: USERS_MESSAGES.UPLOAD_SUCCESS, result: url })
 }
-export const videoStatusController = async (req: Request, res: Response, next: NextFunction) => {
+export const videoStatusController = async (req: Request, res: Response) => {
   const { id } = req.params
   const result = await mediaService.getVideoStatus(id as string)
   res.json({ message: USERS_MESSAGES.GET_VIDEO_STATUS_SUCCESS, result: result })
 }
 
-export const serveImageController = (req: Request, res: Response, next: NextFunction) => {
+export const serveImageController = (req: Request, res: Response) => {
   const { name } = req.params
   res.sendFile(path.resolve(UPLOAD_IMAGES_DIR, name), (err) => {
     if (err) {

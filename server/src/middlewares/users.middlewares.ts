@@ -13,7 +13,7 @@ import { JsonWebTokenError } from 'jsonwebtoken'
 import _ from 'lodash'
 import { ObjectId } from 'mongodb'
 import { ConversationsStatus, UserVerifyStatus } from '~/constants/enum'
-import User from '~/models/schemas/users.schema'
+import User from '~/models/schemas/Users.schema'
 export const registerValidator = validate(
   checkSchema(
     {
@@ -25,7 +25,7 @@ export const registerValidator = validate(
           errorMessage: USERS_MESSAGES.INCORRECT_EMAIL_FORMAT
         },
         custom: {
-          options: async (value, { req }) => {
+          options: async (value) => {
             if (!value) return true
             const result = await databaseService.users.findOne({ email: value })
             if (result) {
@@ -50,7 +50,7 @@ export const registerValidator = validate(
           errorMessage: USERS_MESSAGES.NAME_MUST_BE_CONTAIN_5_TO_60_CHARACTER
         },
         custom: {
-          options: async (value, { req }) => {
+          options: async (value) => {
             if (!value) return true
             const result = await databaseService.users.findOne({ username: value })
             if (result) {
@@ -231,7 +231,7 @@ export const verifyEmailTokenValidator = validate(
           errorMessage: USERS_MESSAGES.EMAIL_VERIFY_TOKEN_IS_REQUIRED
         },
         custom: {
-          options: async (value, { req }) => {
+          options: async (value) => {
             console.log(value)
 
             const user = await databaseService.users.findOne({ email_verify_token: value })
@@ -293,7 +293,7 @@ export const verifyForgotPasswordTokenValidator = validate(
           errorMessage: USERS_MESSAGES.FORGOT_PASSWORD_TOKEN_IS_REQUIRED
         },
         custom: {
-          options: async (value, { req }) => {
+          options: async (value) => {
             const user = await databaseService.users.findOne({ forgot_password_token: value })
             if (!user) {
               throw new ErrorWithStatus({
@@ -456,7 +456,7 @@ export const getUserProfileValidator = validate(
           errorMessage: USERS_MESSAGES.USERNAME_MUST_BE_CONTAIN_IS_STRING
         },
         custom: {
-          options: async (value: string, { req }) => {
+          options: async (value: string) => {
             const user = await databaseService.users.findOne({ username: value })
             if (!user) {
               throw new ErrorWithStatus({

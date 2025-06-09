@@ -1,11 +1,13 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-extra-boolean-cast */
 import { Request } from 'express'
 import fs from 'fs'
 import formidable, { Part } from 'formidable'
 import { File } from 'formidable'
 import { UPLOAD_IMAGES_DIR, UPLOAD_TEMP_DIR, UPLOAD_VIDEO_DIR, UPLOAD_VIDEO_HLS_DIR } from '~/constants/dir'
-import { nanoid } from 'nanoid'
+
 import path from 'path'
+import { nanoid } from 'nanoid'
 export const initFolderImage = () => {
   if (!fs.existsSync(UPLOAD_IMAGES_DIR)) {
     fs.mkdirSync(UPLOAD_IMAGES_DIR, {
@@ -38,6 +40,8 @@ export const handleUploadImage = async (req: Request) => {
     maxTotalFileSize: 300 * 1024 * 4, // 10MB
     filter: function ({ name, originalFilename, mimetype }: Part) {
       const valid = name === 'image' && Boolean(mimetype?.includes('image/'))
+      console.log(`File upload: ${originalFilename}, valid: ${valid}`)
+
       if (!valid) {
         form.emit('error' as any, new Error('File type is not valid') as any)
       }
@@ -47,6 +51,7 @@ export const handleUploadImage = async (req: Request) => {
 
   return new Promise<File[]>((resolve, reject) => {
     form.parse(req, (err, fields, files) => {
+      console.log('fields:', fields)
       if (err) {
         return reject(err)
       }
@@ -77,6 +82,7 @@ export const handleUploadVideo = async (req: Request) => {
     keepExtensions: true,
     maxFileSize: 50 * 1024 * 1024, // 300KB
     filter: function ({ name, originalFilename, mimetype }: Part) {
+      console.log(`File upload: ${originalFilename}, mimetype: ${mimetype}`)
       const valid = name === 'video' && Boolean(mimetype?.includes('mp4') || mimetype?.includes('quicktime'))
       if (!valid) {
         form.emit('error' as any, new Error('File type is not valid') as any)
@@ -111,6 +117,7 @@ export const handleUploadVideoHLS = async (req: Request) => {
     keepExtensions: true,
     maxFileSize: 50 * 1024 * 1024, // 300KB
     filter: function ({ name, originalFilename, mimetype }: Part) {
+      console.log(`File upload: ${originalFilename}, mimetype: ${mimetype}`)
       const valid = name === 'video' && Boolean(mimetype?.includes('mp4') || mimetype?.includes('quicktime'))
       if (!valid) {
         form.emit('error' as any, new Error('File type is not valid') as any)
@@ -124,6 +131,7 @@ export const handleUploadVideoHLS = async (req: Request) => {
 
   return new Promise<File[]>((resolve, reject) => {
     form.parse(req, (err, fields, files) => {
+      console.log('fields:', fields)
       if (err) {
         return reject(err)
       }
