@@ -58,16 +58,6 @@ app.use(
   })
 )
 
-const corsOptions: CorsOptions = {
-  origin: isProduction
-    ? envConfig.client_url
-    : ['http://localhost:3000', 'http://localhost:3001', 'http://localhost:3002'],
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
-}
-
-app.use(cors(corsOptions))
 app.use(limiter)
 
 initFolderImage()
