@@ -18,7 +18,7 @@ const options: swaggerJsdoc.Options = {
     },
     servers: [
       {
-        url: 'https://your-production-domain.com',
+        url: 'https://realtime-chat-app-tam7.onrender.com',
         description: 'Production server'
       },
       {
