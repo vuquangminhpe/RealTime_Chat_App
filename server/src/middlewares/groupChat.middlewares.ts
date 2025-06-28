@@ -80,8 +80,14 @@ export const createGroupValidator = validate(
       },
       avatar: {
         optional: true,
-        isString: {
-          errorMessage: 'Avatar must be a string'
+        custom: {
+          options: (value: any) => {
+            // Cho phép null, undefined hoặc string
+            if (value === null || value === undefined || typeof value === 'string') {
+              return true
+            }
+            throw new Error('Avatar must be a string or null')
+          }
         }
       }
     },
@@ -112,16 +118,16 @@ export const addMemberValidator = validate(
               })
             }
 
-            // Check if user is admin or owner
+            // Check if user is a member of the group (any member can add new members)
             const member = await databaseService.groupMembers.findOne({
               group_id: new ObjectId(value),
               user_id: new ObjectId(user_id),
               status: GroupMemberStatus.Active
             })
 
-            if (!member || (member.role !== GroupMemberRole.Admin && member.role !== GroupMemberRole.Owner)) {
+            if (!member) {
               throw new ErrorWithStatus({
-                messages: GROUP_CHAT_MESSAGES.ADMIN_PERMISSION_REQUIRED,
+                messages: GROUP_CHAT_MESSAGES.NOT_GROUP_MEMBER,
                 status: HTTP_STATUS.FORBIDDEN
               })
             }
@@ -313,8 +319,14 @@ export const updateGroupValidator = validate(
       },
       avatar: {
         optional: true,
-        isString: {
-          errorMessage: 'Avatar must be a string'
+        custom: {
+          options: (value: any) => {
+            // Cho phép null, undefined hoặc string
+            if (value === null || value === undefined || typeof value === 'string') {
+              return true
+            }
+            throw new Error('Avatar must be a string or null')
+          }
         }
       }
     },

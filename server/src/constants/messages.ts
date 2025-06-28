@@ -66,6 +66,8 @@ export const USERS_MESSAGES = {
 export const FRIENDS_SHIP_MESSAGES = {
   FRIEND_NOT_FOUND: 'Friend not found',
   ALREADY_FRIEND: 'Already friend',
+  FRIEND_REQUEST_ALREADY_SENT: 'Friend request already sent',
+  USER_IS_BLOCKED: 'User is blocked',
   FRIEND_ADDED_SUCCESSFULLY: 'Friend add successfully',
   NOT_FRIEND: 'Not friend',
   REMOVED_FRIEND_SUCCESSFULLY: 'Removed friend successfully',
@@ -79,9 +81,11 @@ export const FRIENDS_SHIP_MESSAGES = {
   FRIEND_REQUEST_REJECTED_SUCCESSFULLY: 'Friend request rejected successfully',
   GET_FRIEND_REQUESTS_SUCCESSFULLY: 'Get friend requests successfully',
   GET_ALL_FRIENDS_SUCCESSFULLY: 'Get all friends successfully',
+  GET_ALL_USERS_SUCCESSFULLY: 'Get all users successfully',
   GET_FRIEND_SUGGESTIONS_SUCCESSFULLY: 'Get friend suggestions successfully',
   SEARCH_IS_REQUIRED: 'Search is required',
   GET_FRIENDS_SUCCESSFULLY: 'Get friends successfully',
+  SEARCH_USERS_SUCCESSFULLY: 'Search users successfully',
   CANCEL_FRIEND_REQUEST_SUCCESSFULLY: 'Cancel friend request successfully',
   YOU_CAN_NOT_CANCEL_TO_THIS_USER: 'You can not cancel to this user'
 }

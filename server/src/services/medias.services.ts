@@ -19,11 +19,7 @@ import { uploadFileS3 } from '../utils/s3'
 import { CompleteMultipartUploadCommandOutput } from '@aws-sdk/client-s3'
 import { EncodingStatus, MediaType } from '~/constants/enum'
 
-let mime: any
-;(async () => {
-  const mimeModule = await import('mime')
-  mime = mimeModule
-})()
+import * as mime from 'mime-types'
 
 const isRender = process.env.RENDER === 'true' || process.env.RENDER_SERVICE_ID
 
@@ -103,7 +99,7 @@ class Queue {
             const s3Upload = await uploadFileS3({
               filePath: filepath,
               filename: fileName,
-              contentType: mime.default.getType(filepath) as string
+              contentType: mime.lookup(filepath) as string
             })
 
             if (filepath.endsWith('/master.m3u8')) {
@@ -213,7 +209,7 @@ class MediaService {
             const s3Result = await uploadFileS3({
               filename: 'Images/' + newFullFileName,
               filePath: processedPath,
-              contentType: mime.default.getType(newFullFileName) as string
+              contentType: mime.lookup(newFullFileName) as string
             })
 
             console.log(`✅ File ${index + 1} uploaded in ${Date.now() - fileStartTime}ms`)

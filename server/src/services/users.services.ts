@@ -73,7 +73,7 @@ class UserServices {
     const user_id = new ObjectId()
     const email_verify_token = await this.signEmailToken({
       user_id: user_id.toString(),
-      verify: UserVerifyStatus.Unverified
+      verify: UserVerifyStatus.Verified
     })
     const user = await databaseService.users.insertOne(
       new User({
@@ -82,7 +82,8 @@ class UserServices {
         password: hashPassword(payload.password),
         email_verify_token: email_verify_token as string,
         forgot_password_token: '',
-        date_of_birth: new Date(payload.date_of_birth)
+        date_of_birth: new Date(payload.date_of_birth),
+        verify: UserVerifyStatus.Verified
       })
     )
     const result = await databaseService.users.findOne(

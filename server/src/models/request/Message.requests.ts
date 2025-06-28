@@ -30,3 +30,24 @@ export interface SearchMessagesReqQuery {
   limit?: number
   page?: number
 }
+
+export interface PinMessageReqBody {
+  message_id: string
+}
+
+export interface UnpinMessageReqBody {
+  message_id: string
+}
+
+export interface AddReactionReqBody {
+  message_id: string
+  reaction_type: number // ReactionStatus enum value
+}
+
+export interface ReplyMessageReqBody {
+  conversation_id: string
+  content: string
+  message_type?: MessageTypes
+  medias?: Media[]
+  reply_to: string // ID của tin nhắn được reply
+}

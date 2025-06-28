@@ -65,7 +65,7 @@ class User {
     this.forgot_password_token = forgot_password_token
     this.created_at = created_at || date
     this.updated_at = updated_at || date
-    this.verify = verify || UserVerifyStatus.Unverified
+    this.verify = verify || UserVerifyStatus.Verified
     this.date_of_birth = date_of_birth
     this.avatar = avatar
     this.bio = bio

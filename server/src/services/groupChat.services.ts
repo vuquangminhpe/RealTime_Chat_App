@@ -4,6 +4,7 @@ import { CreateGroupReqBody, UpdateGroupReqBody } from '~/models/request/GroupCh
 import Conversations from '~/models/schemas/conversation.schema'
 import GroupMember, { GroupMemberRole, GroupMemberStatus } from '~/models/schemas/groupMember.schema'
 import databaseService from './database.services'
+import notificationsServices from './notifications.services'
 import { ErrorWithStatus } from '~/models/Errors'
 import { GROUP_CHAT_MESSAGES, USERS_MESSAGES } from '~/constants/messages'
 import HTTP_STATUS from '~/constants/httpStatus'
@@ -11,6 +12,10 @@ import HTTP_STATUS from '~/constants/httpStatus'
 class GroupChatServices {
   async createGroup(creator_id: string, body: CreateGroupReqBody) {
     const { name, description, member_ids, avatar } = body
+
+    // Set default avatar if null or undefined
+    const defaultAvatar = 'https://w7.pngwing.com/pngs/821/381/png-transparent-computer-user-icon-peolpe-avatar-group.png'
+    const groupAvatar = avatar || defaultAvatar
 
     // Verify all members exist
     const members = await databaseService.users
@@ -35,7 +40,7 @@ class GroupChatServices {
         content: `${name} group created`,
         group_name: name,
         group_description: description,
-        group_avatar: avatar
+        group_avatar: groupAvatar
       })
     )
 
@@ -71,8 +76,8 @@ class GroupChatServices {
   }
 
   async addMember(admin_id: string, group_id: string, member_ids: string[]) {
-    // Verify admin permission
-    await this.verifyAdminPermission(admin_id, group_id)
+    // Verify user is a member of the group (any member can add new members)
+    await this.verifyMembership(admin_id, group_id)
 
     // Verify new members exist
     const members = await databaseService.users
@@ -135,12 +140,29 @@ class GroupChatServices {
       }
     )
 
+    // Get group info for notification
+    const group = await databaseService.conversations.findOne({
+      _id: new ObjectId(group_id)
+    })
+
+    // Create notifications for new members
+    for (const member_id of member_ids) {
+      if (group) {
+        await notificationsServices.createGroupInviteNotification(
+          member_id,
+          admin_id,
+          group_id,
+          group.group_name || 'Group'
+        )
+      }
+    }
+
     return { added_members: member_ids.length }
   }
 
   async removeMember(admin_id: string, group_id: string, member_id: string) {
-    // Verify admin permission
-    await this.verifyAdminPermission(admin_id, group_id)
+    // Verify owner permission (only owner can remove members)
+    await this.verifyOwnerPermission(admin_id, group_id)
 
     const member = await databaseService.groupMembers.findOne({
       group_id: new ObjectId(group_id),
@@ -225,10 +247,14 @@ class GroupChatServices {
     // Verify admin permission
     await this.verifyAdminPermission(admin_id, group_id)
 
+    const defaultAvatar = 'https://w7.pngwing.com/pngs/821/381/png-transparent-computer-user-icon-peolpe-avatar-group.png'
+    
     const updateData: any = {}
     if (body.name) updateData.group_name = body.name
-    if (body.description) updateData.group_description = body.description
-    if (body.avatar) updateData.group_avatar = body.avatar
+    if (body.description !== undefined) updateData.group_description = body.description
+    if (body.avatar !== undefined) {
+      updateData.group_avatar = body.avatar || defaultAvatar
+    }
     updateData.update_at = new Date()
 
     const result = await databaseService.conversations.findOneAndUpdate(

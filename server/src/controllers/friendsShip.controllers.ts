@@ -17,9 +17,9 @@ export const addFriendsController = async (req: Request<ParamsDictionary, any, A
 }
 
 export const unFriendsController = async (req: Request<ParamsDictionary, any, unFriendReqBody>, res: Response) => {
-  const { friend_id } = req.params
+  const { friendship_id } = req.params
   const { user_id } = (req as Request).decode_authorization as TokenPayload
-  await friendsShipServices.unFriend(friend_id, user_id)
+  await friendsShipServices.unFriend(friendship_id, user_id)
   res.json({
     message: FRIENDS_SHIP_MESSAGES.REMOVED_FRIEND_SUCCESSFULLY
   })
@@ -55,17 +55,20 @@ export const getAllFriendsController = async (req: Request<ParamsDictionary, any
 
 export const getFriendRequestsController = async (req: Request<ParamsDictionary, any, any>, res: Response) => {
   const { user_id } = (req as Request).decode_authorization as TokenPayload
-  const friend_requests = await friendsShipServices.getFriendRequests(user_id)
+  const { limit, page } = req.query
+  const friend_requests = await friendsShipServices.getFriendRequests(user_id, Number(limit), Number(page))
   res.json({
     message: FRIENDS_SHIP_MESSAGES.GET_FRIEND_REQUESTS_SUCCESSFULLY,
-    result: friend_requests
+    result: friend_requests.friend_requests,
+    page: Number(page),
+    total_pages: Math.ceil(friend_requests.total / Number(limit))
   })
 }
 
 export const acceptFriendRequestController = async (req: Request<ParamsDictionary, any, any>, res: Response) => {
-  const { friend_id } = req.params
+  const { friendship_id } = req.params
   const { user_id } = req.decode_authorization as TokenPayload
-  const result = await friendsShipServices.acceptFriendRequest(friend_id, user_id)
+  const result = await friendsShipServices.acceptFriendRequest(friendship_id, user_id)
   res.json({
     message: FRIENDS_SHIP_MESSAGES.FRIEND_REQUEST_ACCEPTED_SUCCESSFULLY,
     result
@@ -73,14 +76,15 @@ export const acceptFriendRequestController = async (req: Request<ParamsDictionar
 }
 
 export const rejectFriendRequestController = async (req: Request<ParamsDictionary, any, any>, res: Response) => {
-  const { friend_id } = req.params
+  const { friendship_id } = req.params
   const { user_id } = req.decode_authorization as TokenPayload
-  const result = await friendsShipServices.rejectFriendRequest(friend_id, user_id)
+  const result = await friendsShipServices.rejectFriendRequest(friendship_id, user_id)
   res.json({
     message: FRIENDS_SHIP_MESSAGES.FRIEND_REQUEST_REJECTED_SUCCESSFULLY,
     result
   })
 }
+
 export const searchFriendsController = async (req: Request<ParamsDictionary, any, any>, res: Response) => {
   const { user_id } = req.decode_authorization as TokenPayload
   const { search } = req.query
@@ -95,10 +99,35 @@ export const searchFriendsController = async (req: Request<ParamsDictionary, any
 }
 
 export const cancelFriendsRequestController = async (req: Request<ParamsDictionary, any, any>, res: Response) => {
-  const { friend_id } = req.params
+  const { cancel_request_id } = req.params
   const { user_id } = req.decode_authorization as TokenPayload
-  await friendsShipServices.cancelFriendRequest(friend_id, user_id)
+  await friendsShipServices.cancelFriendRequest(cancel_request_id, user_id)
   res.json({
     message: FRIENDS_SHIP_MESSAGES.CANCEL_FRIEND_REQUEST_SUCCESSFULLY
+  })
+}
+
+export const getAllUsersController = async (req: Request<ParamsDictionary, any, any>, res: Response) => {
+  const { user_id } = (req as Request).decode_authorization as TokenPayload
+  const { limit, page } = req.query
+  const result = await friendsShipServices.getAllUsers(user_id, Number(limit), Number(page))
+  res.json({
+    message: FRIENDS_SHIP_MESSAGES.GET_ALL_USERS_SUCCESSFULLY,
+    result: result.users,
+    page: Number(page),
+    total_pages: Math.ceil(result.total / Number(limit))
+  })
+}
+
+export const searchUsersController = async (req: Request<ParamsDictionary, any, any>, res: Response) => {
+  const { user_id } = (req as Request).decode_authorization as TokenPayload
+  const { search } = req.query
+  const { limit, page } = req.query
+  const result = await friendsShipServices.searchUsers(user_id, search as string, Number(limit), Number(page))
+  res.json({
+    message: FRIENDS_SHIP_MESSAGES.SEARCH_USERS_SUCCESSFULLY,
+    result: result.users,
+    page: Number(page),
+    total_pages: Math.ceil(result.total / Number(limit))
   })
 }

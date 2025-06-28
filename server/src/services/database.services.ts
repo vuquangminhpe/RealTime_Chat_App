@@ -73,6 +73,12 @@ class DatabaseService {
   get conversationSettings(): Collection<ConversationSettings> | null {
     return this.db.collection(envConfig.conversationSettingsCollection) || null
   }
+  get pinnedMessages(): Collection<import('~/models/schemas/pinnedMessage.schema').default> {
+    return this.db.collection('pinnedMessages')
+  }
+  get messageReactions(): Collection<import('~/models/schemas/messageReaction.schema').default> {
+    return this.db.collection('messageReactions')
+  }
 }
 
 const databaseService = new DatabaseService()

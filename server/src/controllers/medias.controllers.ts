@@ -5,7 +5,7 @@ import path from 'path'
 import fs from 'fs'
 import { UPLOAD_IMAGES_DIR, UPLOAD_VIDEO_DIR } from '~/constants/dir'
 import { sendFileFromS3 } from '~/utils/s3'
-import mime from 'mime-types'
+import * as mime from 'mime-types'
 export const uploadImageController = async (req: Request, res: Response) => {
   const url = await mediaService.uploadImage(req)
   res.json({ message: USERS_MESSAGES.UPLOAD_SUCCESS, result: url })

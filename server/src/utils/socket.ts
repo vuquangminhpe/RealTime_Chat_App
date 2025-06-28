@@ -4,6 +4,8 @@ import { TokenPayload } from '~/models/request/User.request'
 import { statusActivityType } from '~/constants/enum'
 import { ObjectId } from 'mongodb'
 import databaseService from '~/services/database.services'
+import notificationsServices from '~/services/notifications.services'
+import socketNotificationManager from './socketNotification'
 import { Server as ServerHttp } from 'http'
 import Message, { MessageStatus, MessageTypes } from '~/models/schemas/message.chema'
 
@@ -19,6 +21,9 @@ const initSocket = (httpServer: ServerHttp) => {
       socket_id: string
     }
   } = {}
+
+  // Initialize notification manager with socket instance
+  socketNotificationManager.setSocketIO(io, users)
 
   io.use(async (socket, next) => {
     try {
@@ -172,6 +177,30 @@ const initSocket = (httpServer: ServerHttp) => {
           const onlineParticipants = participants.filter((id) => users[id] && id !== user_id)
           if (onlineParticipants.length > 0) {
             await databaseService.messages.updateOne({ _id: messageId }, { $set: { status: MessageStatus.Delivered } })
+          }
+
+          // Create notifications for other participants (not sender)
+          const otherParticipants = [
+            conversation.sender_id.toString(),
+            ...conversation.receiver_id.map((id) => id.toString())
+          ].filter(id => id !== user_id)
+          
+          for (const participant_id of otherParticipants) {
+            await notificationsServices.createMessageNotification(
+              participant_id, 
+              user_id, 
+              conversation_id, 
+              content
+            )
+            
+            // Emit real-time notification using notification manager
+            socketNotificationManager.emitMessageNotification(
+              participant_id,
+              sender?.username || 'Unknown',
+              content,
+              conversation_id,
+              user_id
+            )
           }
         } catch (messageError) {
           console.error('Error processing message:', messageError)

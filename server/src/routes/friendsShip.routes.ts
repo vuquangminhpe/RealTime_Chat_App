@@ -8,7 +8,9 @@ import {
   getFriendRequestsController,
   rejectFriendRequestController,
   searchFriendsController,
-  unFriendsController
+  unFriendsController,
+  getAllUsersController,
+  searchUsersController
 } from '~/controllers/friendsShip.controllers'
 import {
   acceptFriendsValidator,
@@ -16,6 +18,7 @@ import {
   cancelFriendsRequestValidator,
   rejectFriendsValidator,
   searchFriendsValidator,
+  searchUsersValidator,
   unFriendsValidator
 } from '~/middlewares/friendsShip.middlewares'
 import { paginationValidator } from '~/middlewares/supports.middlewares'
@@ -40,12 +43,13 @@ friendShipsRouter.post(
 
 /**
  * Description: unfriend
- * Path: /unfriend/:user_id
- * method: POST
- * body: {email: string, password: string}
+ * Path: /unfriend/:friendship_id
+ * method: DELETE
+ * headers: {access_token: string}
+ * params: {friendship_id: string}
  */
 friendShipsRouter.delete(
-  '/unfriend/:friend_id',
+  '/unfriend/:friendship_id',
   accessTokenValidator,
   verifyUserValidator,
   unFriendsValidator,
@@ -95,13 +99,13 @@ friendShipsRouter.get(
 
 /**
  * Description:accept friend request
- * Path: /accept/:request_id
- * method: GET
+ * Path: /accept/:friendship_id
+ * method: POST
  * headers: {access_token: string}
- * params: {accept_friend_id: string}
+ * params: {friendship_id: string}
  */
 friendShipsRouter.post(
-  '/accept/:accept_friend_id',
+  '/accept/:friendship_id',
   accessTokenValidator,
   verifyUserValidator,
   acceptFriendsValidator,
@@ -110,13 +114,13 @@ friendShipsRouter.post(
 
 /**
  * Description:reject friend request
- * Path: /accept/:request_id
- * method: Delete
+ * Path: /reject/:friendship_id
+ * method: DELETE
  * headers: {access_token: string}
- * params: {reject_friend_id: string}
+ * params: {friendship_id: string}
  */
 friendShipsRouter.delete(
-  '/reject/:reject_friend_id',
+  '/reject/:friendship_id',
   accessTokenValidator,
   verifyUserValidator,
   rejectFriendsValidator,
@@ -141,15 +145,49 @@ friendShipsRouter.get(
 
 /**
  * Description:Cancel friend requests sent to others
- * Path: /cancel/:request_id
- * method: GET
+ * Path: /cancel/:cancel_request_id
+ * method: DELETE
  * headers: {access_token: string}
  * params: {cancel_request_id: string}
  */
 friendShipsRouter.delete(
-  '/cancel_request_id',
+  '/cancel/:cancel_request_id',
   accessTokenValidator,
   verifyUserValidator,
   cancelFriendsRequestValidator,
   wrapAsync(cancelFriendsRequestController)
 )
+
+/**
+ * Description: get all users in system
+ * Path: /all-users
+ * method: GET
+ * headers: {access_token: string}
+ * query: {page: number, limit: number}
+ */
+friendShipsRouter.get(
+  '/all-users',
+  accessTokenValidator,
+  verifyUserValidator,
+  paginationValidator,
+  wrapAsync(getAllUsersController)
+)
+
+/**
+ * Description: search users in system
+ * Path: /search-users
+ * method: GET
+ * headers: {access_token: string}
+ * query: {search: string, page: number, limit: number}
+ */
+friendShipsRouter.get(
+  '/search-users',
+  accessTokenValidator,
+  verifyUserValidator,
+  paginationValidator,
+  searchUsersValidator,
+  wrapAsync(searchUsersController)
+)
+
+
+

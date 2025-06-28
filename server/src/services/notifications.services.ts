@@ -1,6 +1,7 @@
 import { ObjectId } from 'mongodb'
 import Notification, { NotificationStatus, NotificationType } from '~/models/schemas/notification.schema'
 import databaseService from './database.services'
+import socketNotificationManager from '~/utils/socketNotification'
 import { ErrorWithStatus } from '~/models/Errors'
 import { NOTIFICATIONS_MESSAGES } from '~/constants/messages'
 import HTTP_STATUS from '~/constants/httpStatus'
@@ -174,6 +175,13 @@ class NotificationsServices {
       { projection: { username: 1 } }
     )
 
+    // Emit real-time notification
+    socketNotificationManager.emitFriendRequestNotification(
+      recipient_id,
+      sender?.username || 'Unknown',
+      sender_id
+    )
+
     return this.createNotification({
       recipient_id,
       sender_id,
@@ -189,6 +197,13 @@ class NotificationsServices {
     const sender = await databaseService.users.findOne(
       { _id: new ObjectId(sender_id) },
       { projection: { username: 1 } }
+    )
+
+    // Emit real-time notification
+    socketNotificationManager.emitFriendAcceptedNotification(
+      recipient_id,
+      sender?.username || 'Unknown',
+      sender_id
     )
 
     return this.createNotification({
