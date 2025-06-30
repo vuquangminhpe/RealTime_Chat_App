@@ -453,6 +453,60 @@ class FriendsShipServices {
 
     return { users, total: total || 0 }
   }
+
+  async getSentFriendRequests(user_id: string, limit: number, page: number) {
+    // Lấy tất cả lời mời kết bạn mà user đã gửi đi (status pending)
+    const pipeline = [
+      {
+        $match: {
+          user_id: new ObjectId(user_id),
+          status: FriendsShipStatus.pending
+        }
+      },
+      {
+        $lookup: {
+          from: 'users',
+          localField: 'friend_id',
+          foreignField: '_id',
+          as: 'friend_info'
+        }
+      },
+      {
+        $unwind: '$friend_info'
+      },
+      {
+        $project: {
+          _id: 1,
+          friend_id: 1,
+          status: 1,
+          created_at: 1,
+          updated_at: 1,
+          'friend_info._id': 1,
+          'friend_info.username': 1,
+          'friend_info.bio': 1,
+          'friend_info.avatar': 1
+        }
+      },
+      {
+        $sort: { created_at: -1 }
+      },
+      {
+        $skip: limit * (page - 1)
+      },
+      {
+        $limit: limit
+      }
+    ]
+
+    const sent_requests = await databaseService.friendShip.aggregate(pipeline).toArray()
+    
+    const total = await databaseService.friendShip.countDocuments({
+      user_id: new ObjectId(user_id),
+      status: FriendsShipStatus.pending
+    })
+
+    return { sent_requests, total: total || 0 }
+  }
 }
 
 const friendsShipServices = new FriendsShipServices()

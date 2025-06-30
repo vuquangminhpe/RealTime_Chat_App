@@ -87,7 +87,8 @@ export const FRIENDS_SHIP_MESSAGES = {
   GET_FRIENDS_SUCCESSFULLY: 'Get friends successfully',
   SEARCH_USERS_SUCCESSFULLY: 'Search users successfully',
   CANCEL_FRIEND_REQUEST_SUCCESSFULLY: 'Cancel friend request successfully',
-  YOU_CAN_NOT_CANCEL_TO_THIS_USER: 'You can not cancel to this user'
+  YOU_CAN_NOT_CANCEL_TO_THIS_USER: 'You can not cancel to this user',
+  GET_SENT_REQUESTS_SUCCESSFULLY: 'Get sent friend requests successfully'
 }
 
 export const BANNED_MESSAGES = {
@@ -149,7 +150,10 @@ export const MESSAGES_MESSAGES = {
   CONVERSATION_ID_REQUIRED: 'Conversation ID is required',
   CONTENT_IS_REQUIRED: 'Content is required',
   MESSAGE_ID_REQUIRED: 'Message ID is required',
-  SEARCH_TERM_REQUIRED: 'Search term is required'
+  SEARCH_TERM_REQUIRED: 'Search term is required',
+  CANNOT_SEND_MESSAGE_NOT_FRIENDS: 'Cannot send message. Users are no longer friends.',
+  CANNOT_VIEW_MESSAGES_NOT_FRIENDS: 'Cannot view messages. Users are no longer friends.',
+  CANNOT_INTERACT_NOT_FRIENDS: 'Cannot interact with messages. Users are no longer friends.'
 }
 
 export const LIKES_MESSAGES = {

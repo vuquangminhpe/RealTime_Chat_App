@@ -10,7 +10,8 @@ import {
   searchFriendsController,
   unFriendsController,
   getAllUsersController,
-  searchUsersController
+  searchUsersController,
+  getSentFriendRequestsController
 } from '~/controllers/friendsShip.controllers'
 import {
   acceptFriendsValidator,
@@ -187,6 +188,21 @@ friendShipsRouter.get(
   paginationValidator,
   searchUsersValidator,
   wrapAsync(searchUsersController)
+)
+
+/**
+ * Description: get friend requests sent by user
+ * Path: /get-requests-sent
+ * method: GET
+ * headers: {access_token: string}
+ * query: {page: number, limit: number}
+ */
+friendShipsRouter.get(
+  '/get-requests-sent',
+  accessTokenValidator,
+  verifyUserValidator,
+  paginationValidator,
+  wrapAsync(getSentFriendRequestsController)
 )
 
 
