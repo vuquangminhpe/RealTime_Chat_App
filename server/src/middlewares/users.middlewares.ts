@@ -396,7 +396,11 @@ export const updateMyProfileValidator = validate(
         custom: {
           options: async (value, { req }) => {
             const { user_id } = (req as Request).decode_authorization as TokenPayload
-            const user = await databaseService.users.findOne({ _id: new ObjectId(user_id), username: value as string })
+            // Tìm user khác (không phải chính mình) có cùng username
+            const user = await databaseService.users.findOne({ 
+              _id: { $ne: new ObjectId(user_id) }, 
+              username: value as string 
+            })
             if (user) {
               throw new ErrorWithStatus({
                 messages: USERS_MESSAGES.USERNAME_ALREADY_EXISTS,
