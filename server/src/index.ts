@@ -8,9 +8,7 @@ import { initFolderImage, initFolderVideo, initFolderVideoHls } from './utils/fi
 import staticRouter from './routes/static.routes'
 import mediasRouter from './routes/medias.routes'
 import { UPLOAD_VIDEO_DIR } from './constants/dir'
-import rateLimit from 'express-rate-limit'
 import helmet from 'helmet'
-import cors, { CorsOptions } from 'cors'
 import initSocket from './utils/socket'
 import { friendShipsRouter } from './routes/friendsShip.routes'
 import { storiesRouter } from './routes/stories.routes'
@@ -23,16 +21,6 @@ import { groupChatRouter } from './routes/groupChat.routes'
 import databaseService from './services/database.services'
 import storiesServices from './services/stories.services'
 import { setupSwaggerDocs } from './Swagger/setupSwaggerDocs'
-
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100,
-  standardHeaders: true,
-  legacyHeaders: false,
-  message: {
-    error: 'Too many requests from this IP, please try again later.'
-  }
-})
 
 const app = express()
 
@@ -57,8 +45,6 @@ app.use(
     }
   })
 )
-
-app.use(limiter)
 
 initFolderImage()
 initFolderVideo()
