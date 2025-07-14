@@ -1,5 +1,5 @@
 import express from 'express'
-import { envConfig, isProduction } from './constants/config'
+import { envConfig } from './constants/config'
 import { createServer } from 'http'
 import { usersRouter } from './routes/users.routes'
 import { defaultErrorHandler } from './middlewares/error.middlewares'
