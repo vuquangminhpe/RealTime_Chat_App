@@ -131,3 +131,15 @@ export const searchUsersController = async (req: Request<ParamsDictionary, any, 
     total_pages: Math.ceil(result.total / Number(limit))
   })
 }
+
+export const getSentFriendRequestsController = async (req: Request<ParamsDictionary, any, any>, res: Response) => {
+  const { user_id } = req.decode_authorization as TokenPayload
+  const { limit, page } = req.query
+  const sent_requests = await friendsShipServices.getSentFriendRequests(user_id, Number(limit), Number(page))
+  res.json({
+    message: FRIENDS_SHIP_MESSAGES.GET_SENT_REQUESTS_SUCCESSFULLY,
+    result: sent_requests.sent_requests,
+    page: Number(page),
+    total_pages: Math.ceil(sent_requests.total / Number(limit))
+  })
+}

@@ -230,7 +230,7 @@ class UserServices {
   async getProfile(user_id: string) {
     const user = await databaseService.users.findOne(
       { _id: new ObjectId(user_id) },
-      { projection: { email: 1, username: 1, _id: 1, verify: 1, avatar: 1 } }
+      { projection: { email: 1, username: 1, _id: 1, verify: 1, avatar: 1, bio: 1, location: 1, website: 1 } }
     )
     return user
   }
@@ -242,6 +242,10 @@ class UserServices {
         $currentDate: {
           updated_at: true
         }
+      },
+      {
+        returnDocument: 'after',
+        projection: { email: 1, username: 1, _id: 1, verify: 1, avatar: 1, bio: 1, location: 1, website: 1 }
       }
     )
     return user

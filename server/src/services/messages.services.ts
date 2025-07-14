@@ -38,6 +38,38 @@ class MessagesServices {
       })
     }
 
+    // Check if this is a private conversation and users are still friends
+    if (conversation.type === 0) {
+      // Get the other user ID
+      const otherUserId = conversation.sender_id.toString() === sender_id 
+        ? conversation.receiver_id[0].toString() 
+        : conversation.sender_id.toString()
+
+      // Check if users are still friends
+      const friendship = await databaseService.friendShip.findOne({
+        $or: [
+          { 
+            user_id: new ObjectId(sender_id), 
+            friend_id: new ObjectId(otherUserId), 
+            status: 1 // FriendsShipStatus.accepted
+          },
+          { 
+            user_id: new ObjectId(otherUserId), 
+            friend_id: new ObjectId(sender_id), 
+            status: 1 // FriendsShipStatus.accepted
+          }
+        ]
+      })
+
+      // If not friends anymore, cannot send messages
+      if (!friendship) {
+        throw new ErrorWithStatus({
+          messages: MESSAGES_MESSAGES.CANNOT_SEND_MESSAGE_NOT_FRIENDS,
+          status: HTTP_STATUS.FORBIDDEN
+        })
+      }
+    }
+
     const _id = new ObjectId()
     const messageData = new Message({
       _id,
@@ -110,6 +142,10 @@ class MessagesServices {
         status: HTTP_STATUS.FORBIDDEN
       })
     }
+
+    // Check if this is a private conversation (type 0 = private)
+    // Removed friendship check - users can view message history even after unfriend
+    // Only check if user is a participant in the conversation
 
     const query: any = { conversation_id: new ObjectId(conversation_id) }
 
@@ -278,6 +314,10 @@ class MessagesServices {
       })
     }
 
+    // Check if this is a private conversation (type 0 = private)
+    // Removed friendship check - users can search message history even after unfriend
+    // Only check if user is a participant in the conversation
+
     const messages = await databaseService.messages
       .find({
         conversation_id: new ObjectId(conversation_id),
@@ -347,6 +387,38 @@ class MessagesServices {
       })
     }
 
+    // Check if this is a private conversation (type 0 = private)
+    if (conversation.type === 0) {
+      // Get the other user ID
+      const otherUserId = conversation.sender_id.toString() === user_id 
+        ? conversation.receiver_id[0].toString() 
+        : conversation.sender_id.toString()
+
+      // Check if users are still friends
+      const friendship = await databaseService.friendShip.findOne({
+        $or: [
+          { 
+            user_id: new ObjectId(user_id), 
+            friend_id: new ObjectId(otherUserId), 
+            status: 1 // FriendsShipStatus.accepted
+          },
+          { 
+            user_id: new ObjectId(otherUserId), 
+            friend_id: new ObjectId(user_id), 
+            status: 1 // FriendsShipStatus.accepted
+          }
+        ]
+      })
+
+      // If not friends anymore, cannot pin messages
+      if (!friendship) {
+        throw new ErrorWithStatus({
+          messages: MESSAGES_MESSAGES.CANNOT_INTERACT_NOT_FRIENDS,
+          status: HTTP_STATUS.FORBIDDEN
+        })
+      }
+    }
+
     // Check if message is already pinned
     const existingPin = await databaseService.pinnedMessages.findOne({
       message_id: new ObjectId(message_id)
@@ -413,6 +485,38 @@ class MessagesServices {
       })
     }
 
+    // Check if this is a private conversation (type 0 = private)
+    if (conversation && conversation.type === 0) {
+      // Get the other user ID
+      const otherUserId = conversation.sender_id.toString() === user_id 
+        ? conversation.receiver_id[0].toString() 
+        : conversation.sender_id.toString()
+
+      // Check if users are still friends
+      const friendship = await databaseService.friendShip.findOne({
+        $or: [
+          { 
+            user_id: new ObjectId(user_id), 
+            friend_id: new ObjectId(otherUserId), 
+            status: 1 // FriendsShipStatus.accepted
+          },
+          { 
+            user_id: new ObjectId(otherUserId), 
+            friend_id: new ObjectId(user_id), 
+            status: 1 // FriendsShipStatus.accepted
+          }
+        ]
+      })
+
+      // If not friends anymore, cannot unpin messages
+      if (!friendship) {
+        throw new ErrorWithStatus({
+          messages: MESSAGES_MESSAGES.CANNOT_INTERACT_NOT_FRIENDS,
+          status: HTTP_STATUS.FORBIDDEN
+        })
+      }
+    }
+
     // Check if message is pinned
     const pinnedMessage = await databaseService.pinnedMessages.findOne({
       message_id: new ObjectId(message_id)
@@ -456,6 +560,10 @@ class MessagesServices {
         status: HTTP_STATUS.FORBIDDEN
       })
     }
+
+    // Check if this is a private conversation (type 0 = private)
+    // Removed friendship check - users can view pinned messages even after unfriend
+    // Only check if user is a participant in the conversation
 
     // Get pinned messages with full message details
     const pinnedMessages = await databaseService.pinnedMessages
@@ -524,6 +632,38 @@ class MessagesServices {
       })
     }
 
+    // Check if this is a private conversation (type 0 = private)
+    if (conversation && conversation.type === 0) {
+      // Get the other user ID
+      const otherUserId = conversation.sender_id.toString() === user_id 
+        ? conversation.receiver_id[0].toString() 
+        : conversation.sender_id.toString()
+
+      // Check if users are still friends
+      const friendship = await databaseService.friendShip.findOne({
+        $or: [
+          { 
+            user_id: new ObjectId(user_id), 
+            friend_id: new ObjectId(otherUserId), 
+            status: 1 // FriendsShipStatus.accepted
+          },
+          { 
+            user_id: new ObjectId(otherUserId), 
+            friend_id: new ObjectId(user_id), 
+            status: 1 // FriendsShipStatus.accepted
+          }
+        ]
+      })
+
+      // If not friends anymore, cannot add reactions
+      if (!friendship) {
+        throw new ErrorWithStatus({
+          messages: MESSAGES_MESSAGES.CANNOT_INTERACT_NOT_FRIENDS,
+          status: HTTP_STATUS.FORBIDDEN
+        })
+      }
+    }
+
     // Check if user already reacted to this message
     const existingReaction = await databaseService.messageReactions.findOne({
       message_id: new ObjectId(message_id),
@@ -573,6 +713,66 @@ class MessagesServices {
   }
 
   async removeReaction(user_id: string, message_id: string) {
+    // Verify message exists and user is participant
+    const message = await databaseService.messages.findOne({
+      _id: new ObjectId(message_id)
+    })
+
+    if (!message) {
+      throw new ErrorWithStatus({
+        messages: MESSAGES_MESSAGES.MESSAGE_NOT_FOUND,
+        status: HTTP_STATUS.NOT_FOUND
+      })
+    }
+
+    // Verify user is participant in conversation
+    const conversation = await databaseService.conversations.findOne({
+      _id: message.conversation_id
+    })
+
+    const isParticipant =
+      conversation?.sender_id.toString() === user_id ||
+      conversation?.receiver_id.some((id) => id.toString() === user_id)
+
+    if (!isParticipant) {
+      throw new ErrorWithStatus({
+        messages: MESSAGES_MESSAGES.NOT_CONVERSATION_PARTICIPANT,
+        status: HTTP_STATUS.FORBIDDEN
+      })
+    }
+
+    // Check if this is a private conversation (type 0 = private)
+    if (conversation && conversation.type === 0) {
+      // Get the other user ID
+      const otherUserId = conversation.sender_id.toString() === user_id 
+        ? conversation.receiver_id[0].toString() 
+        : conversation.sender_id.toString()
+
+      // Check if users are still friends
+      const friendship = await databaseService.friendShip.findOne({
+        $or: [
+          { 
+            user_id: new ObjectId(user_id), 
+            friend_id: new ObjectId(otherUserId), 
+            status: 1 // FriendsShipStatus.accepted
+          },
+          { 
+            user_id: new ObjectId(otherUserId), 
+            friend_id: new ObjectId(user_id), 
+            status: 1 // FriendsShipStatus.accepted
+          }
+        ]
+      })
+
+      // If not friends anymore, cannot remove reactions
+      if (!friendship) {
+        throw new ErrorWithStatus({
+          messages: MESSAGES_MESSAGES.CANNOT_INTERACT_NOT_FRIENDS,
+          status: HTTP_STATUS.FORBIDDEN
+        })
+      }
+    }
+
     const result = await databaseService.messageReactions.deleteOne({
       message_id: new ObjectId(message_id),
       user_id: new ObjectId(user_id)
@@ -615,6 +815,10 @@ class MessagesServices {
         status: HTTP_STATUS.FORBIDDEN
       })
     }
+
+    // Check if this is a private conversation (type 0 = private)
+    // Removed friendship check - users can view reactions even after unfriend
+    // Only check if user is a participant in the conversation
 
     // Get reactions with user info
     const reactions = await databaseService.messageReactions
