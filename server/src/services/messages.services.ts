@@ -41,22 +41,23 @@ class MessagesServices {
     // Check if this is a private conversation and users are still friends
     if (conversation.type === 0) {
       // Get the other user ID
-      const otherUserId = conversation.sender_id.toString() === sender_id 
-        ? conversation.receiver_id[0].toString() 
-        : conversation.sender_id.toString()
+      const otherUserId =
+        conversation.sender_id.toString() === sender_id
+          ? conversation.receiver_id[0].toString()
+          : conversation.sender_id.toString()
 
       // Check if users are still friends
       const friendship = await databaseService.friendShip.findOne({
         $or: [
-          { 
-            user_id: new ObjectId(sender_id), 
-            friend_id: new ObjectId(otherUserId), 
-            status: 1 // FriendsShipStatus.accepted
+          {
+            user_id: new ObjectId(sender_id),
+            friend_id: new ObjectId(otherUserId),
+            status: 0 // FriendsShipStatus.accepted
           },
-          { 
-            user_id: new ObjectId(otherUserId), 
-            friend_id: new ObjectId(sender_id), 
-            status: 1 // FriendsShipStatus.accepted
+          {
+            user_id: new ObjectId(otherUserId),
+            friend_id: new ObjectId(sender_id),
+            status: 0 // FriendsShipStatus.accepted
           }
         ]
       })
@@ -104,12 +105,12 @@ class MessagesServices {
     )
 
     // Create notifications for other participants (not sender)
-    const otherParticipants = conversation.receiver_id.filter(id => id.toString() !== sender_id)
+    const otherParticipants = conversation.receiver_id.filter((id) => id.toString() !== sender_id)
     for (const participant_id of otherParticipants) {
       await notificationsServices.createMessageNotification(
-        participant_id.toString(), 
-        sender_id, 
-        conversation_id, 
+        participant_id.toString(),
+        sender_id,
+        conversation_id,
         content
       )
     }
@@ -377,8 +378,7 @@ class MessagesServices {
     }
 
     const isParticipant =
-      conversation.sender_id.toString() === user_id ||
-      conversation.receiver_id.some((id) => id.toString() === user_id)
+      conversation.sender_id.toString() === user_id || conversation.receiver_id.some((id) => id.toString() === user_id)
 
     if (!isParticipant) {
       throw new ErrorWithStatus({
@@ -390,21 +390,22 @@ class MessagesServices {
     // Check if this is a private conversation (type 0 = private)
     if (conversation.type === 0) {
       // Get the other user ID
-      const otherUserId = conversation.sender_id.toString() === user_id 
-        ? conversation.receiver_id[0].toString() 
-        : conversation.sender_id.toString()
+      const otherUserId =
+        conversation.sender_id.toString() === user_id
+          ? conversation.receiver_id[0].toString()
+          : conversation.sender_id.toString()
 
       // Check if users are still friends
       const friendship = await databaseService.friendShip.findOne({
         $or: [
-          { 
-            user_id: new ObjectId(user_id), 
-            friend_id: new ObjectId(otherUserId), 
+          {
+            user_id: new ObjectId(user_id),
+            friend_id: new ObjectId(otherUserId),
             status: 1 // FriendsShipStatus.accepted
           },
-          { 
-            user_id: new ObjectId(otherUserId), 
-            friend_id: new ObjectId(user_id), 
+          {
+            user_id: new ObjectId(otherUserId),
+            friend_id: new ObjectId(user_id),
             status: 1 // FriendsShipStatus.accepted
           }
         ]
@@ -488,21 +489,22 @@ class MessagesServices {
     // Check if this is a private conversation (type 0 = private)
     if (conversation && conversation.type === 0) {
       // Get the other user ID
-      const otherUserId = conversation.sender_id.toString() === user_id 
-        ? conversation.receiver_id[0].toString() 
-        : conversation.sender_id.toString()
+      const otherUserId =
+        conversation.sender_id.toString() === user_id
+          ? conversation.receiver_id[0].toString()
+          : conversation.sender_id.toString()
 
       // Check if users are still friends
       const friendship = await databaseService.friendShip.findOne({
         $or: [
-          { 
-            user_id: new ObjectId(user_id), 
-            friend_id: new ObjectId(otherUserId), 
+          {
+            user_id: new ObjectId(user_id),
+            friend_id: new ObjectId(otherUserId),
             status: 1 // FriendsShipStatus.accepted
           },
-          { 
-            user_id: new ObjectId(otherUserId), 
-            friend_id: new ObjectId(user_id), 
+          {
+            user_id: new ObjectId(otherUserId),
+            friend_id: new ObjectId(user_id),
             status: 1 // FriendsShipStatus.accepted
           }
         ]
@@ -551,8 +553,7 @@ class MessagesServices {
     }
 
     const isParticipant =
-      conversation.sender_id.toString() === user_id ||
-      conversation.receiver_id.some((id) => id.toString() === user_id)
+      conversation.sender_id.toString() === user_id || conversation.receiver_id.some((id) => id.toString() === user_id)
 
     if (!isParticipant) {
       throw new ErrorWithStatus({
@@ -635,21 +636,22 @@ class MessagesServices {
     // Check if this is a private conversation (type 0 = private)
     if (conversation && conversation.type === 0) {
       // Get the other user ID
-      const otherUserId = conversation.sender_id.toString() === user_id 
-        ? conversation.receiver_id[0].toString() 
-        : conversation.sender_id.toString()
+      const otherUserId =
+        conversation.sender_id.toString() === user_id
+          ? conversation.receiver_id[0].toString()
+          : conversation.sender_id.toString()
 
       // Check if users are still friends
       const friendship = await databaseService.friendShip.findOne({
         $or: [
-          { 
-            user_id: new ObjectId(user_id), 
-            friend_id: new ObjectId(otherUserId), 
+          {
+            user_id: new ObjectId(user_id),
+            friend_id: new ObjectId(otherUserId),
             status: 1 // FriendsShipStatus.accepted
           },
-          { 
-            user_id: new ObjectId(otherUserId), 
-            friend_id: new ObjectId(user_id), 
+          {
+            user_id: new ObjectId(otherUserId),
+            friend_id: new ObjectId(user_id),
             status: 1 // FriendsShipStatus.accepted
           }
         ]
@@ -695,7 +697,7 @@ class MessagesServices {
       })
 
       await databaseService.messageReactions.insertOne(reaction)
-      
+
       // Create notification for message sender (if not reacting to own message)
       if (message.sender_id.toString() !== user_id) {
         const reactionEmoji = this.getReactionEmoji(reaction_type)
@@ -707,7 +709,7 @@ class MessagesServices {
           reactionEmoji
         )
       }
-      
+
       return { message: 'Reaction added successfully', reaction }
     }
   }
@@ -744,21 +746,22 @@ class MessagesServices {
     // Check if this is a private conversation (type 0 = private)
     if (conversation && conversation.type === 0) {
       // Get the other user ID
-      const otherUserId = conversation.sender_id.toString() === user_id 
-        ? conversation.receiver_id[0].toString() 
-        : conversation.sender_id.toString()
+      const otherUserId =
+        conversation.sender_id.toString() === user_id
+          ? conversation.receiver_id[0].toString()
+          : conversation.sender_id.toString()
 
       // Check if users are still friends
       const friendship = await databaseService.friendShip.findOne({
         $or: [
-          { 
-            user_id: new ObjectId(user_id), 
-            friend_id: new ObjectId(otherUserId), 
+          {
+            user_id: new ObjectId(user_id),
+            friend_id: new ObjectId(otherUserId),
             status: 1 // FriendsShipStatus.accepted
           },
-          { 
-            user_id: new ObjectId(otherUserId), 
-            friend_id: new ObjectId(user_id), 
+          {
+            user_id: new ObjectId(otherUserId),
+            friend_id: new ObjectId(user_id),
             status: 1 // FriendsShipStatus.accepted
           }
         ]
